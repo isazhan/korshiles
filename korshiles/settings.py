@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-n=uxz%k%^j+s70mr#fuu!8e1lw1z(t11ounae*nq23cbk!h!f3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'apps.users'
 ]
 
 MIDDLEWARE = [
@@ -73,12 +74,17 @@ WSGI_APPLICATION = 'korshiles.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+MONGODB_DATABASES = {
+    "default": {
+        "name": 'test',
+        "host": 'localhost',
+        "password": 'atropos',
+        "username": 'testuser',
+        "tz_aware": True, # if you using timezones in django (USE_TZ = True)
+    },
 }
+
+INSTALLED_APPS += ["django_mongoengine"]
 
 
 # Password validation
@@ -121,3 +127,10 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+STATIC_URL = 'static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
