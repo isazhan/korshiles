@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.users'
+    'apps.users',
+    'apps.main',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +56,7 @@ ROOT_URLCONF = 'korshiles.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,17 +75,8 @@ WSGI_APPLICATION = 'korshiles.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-MONGODB_DATABASES = {
-    "default": {
-        "name": 'test',
-        "host": 'localhost',
-        "password": 'atropos',
-        "username": 'testuser',
-        "tz_aware": True, # if you using timezones in django (USE_TZ = True)
-    },
-}
-
-INSTALLED_APPS += ["django_mongoengine"]
+import json
+DATABASES = json.load(open(BASE_DIR / 'dbconfig.json'))
 
 
 # Password validation
@@ -123,14 +115,16 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    BASE_DIR / 'static',
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODEL = 'users.CustomUser'
 
-STATIC_URL = 'static/'
-
-STATICFILES_DIRS = [
-    BASE_DIR / 'static',
-]
+LOGIN_URL = '/my/login_user'
+LOGOUT_URL = '/'
