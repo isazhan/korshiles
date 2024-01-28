@@ -1,4 +1,6 @@
-<form action="">
-    343434
-    
+<form method="post" action="{% url 'create_ad' %}">
+    {% csrf_token %}
+    <input type="text" name="test1" id="">
+    <input type="text" name="test2" id="">
+    <button type="submit">Отправить</button>
 </form>

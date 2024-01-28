@@ -6,4 +6,8 @@ def index(request):
 
 
 def create_ad(request):
-    return render(request, 'main/create_ad.html')
+    if request.method == 'POST':
+        print(request.POST)
+        print(type(request.POST))
+    else:
+        return render(request, 'main/create_ad.html')
