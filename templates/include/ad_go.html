@@ -1,47 +1,68 @@
-<form action="{% url 'create_ad' %}">
+<form method="post" action="{% url 'create_ad' %}">
     {% csrf_token %}
-    Subjects: <select name="subject" id="subject">
-        <option value="" selected="selected">Select subject</option>
-      </select>
-      <br><br>
-      Topics: <select name="topic" id="topic">
-        <option value="" selected="selected">Please select subject first</option>
-      </select>
-      <br><br>
-      Chapters: <select name="chapter" id="chapter">
-        <option value="" selected="selected">Please select topic first</option>
-      </select>
-      <br><br>
-      <input type="submit" value="Submit">
+    <label for="category">Select Category:</label>
+    <select id="category" onchange="loadSubcategories()" name="city">
+        <option value="">Select</option>
+    </select>
+    
+    <label for="subcategory">Select Subcategory:</label>
+    <select id="subcategory" name="district">
+        <option value="">Select</option>
+    </select>
+    <button type="submit">Отправить</button>
 </form>
 
+
 <script>
-    import data from '../../static/base/cities.json' assert { type: 'json' };
-    var subjectObject = data;
-window.onload = function() {
-  var subjectSel = document.getElementById("subject");
-  var topicSel = document.getElementById("topic");
-  var chapterSel = document.getElementById("chapter");
-  for (var x in subjectObject) {
-    subjectSel.options[subjectSel.options.length] = new Option(x, x);
+  // Function to load options from JSON file
+  function loadOptions(callback) {
+      // You can replace 'options.json' with the path to your JSON file
+      fetch('../../static/base/cities.json')
+          .then(response => response.json())
+          .then(data => callback(data))
+          .catch(error => console.error('Error loading options:', error));
   }
-  subjectSel.onchange = function() {
-    //empty Chapters- and Topics- dropdowns
-    chapterSel.length = 1;
-    topicSel.length = 1;
-    //display correct values
-    for (var y in subjectObject[this.value]) {
-      topicSel.options[topicSel.options.length] = new Option(y, y);
-    }
+
+  // Function to populate the category select
+  function loadCategories() {
+      var categorySelect = document.getElementById('category');
+      loadOptions(function (data) {
+          data.categories.forEach(function (category) {
+              var option = document.createElement('option');
+              option.value = category.id;
+              option.textContent = category.name;
+              categorySelect.appendChild(option);
+          });
+      });
   }
-  topicSel.onchange = function() {
-    //empty Chapters dropdown
-    chapterSel.length = 1;
-    //display correct values
-    var z = subjectObject[subjectSel.value][this.value];
-    for (var i = 0; i < z.length; i++) {
-      chapterSel.options[chapterSel.options.length] = new Option(z[i], z[i]);
-    }
+
+  // Function to populate the subcategory select based on the selected category
+  function loadSubcategories() {
+      var categorySelect = document.getElementById('category');
+      var subcategorySelect = document.getElementById('subcategory');
+      
+      // Clear subcategory options
+      subcategorySelect.innerHTML = '<option value="">Select</option>';
+      
+      // Get selected category value
+      var selectedCategory = categorySelect.value;
+      
+      if (selectedCategory !== "") {
+          loadOptions(function (data) {
+              var selectedCategoryData = data.categories.find(function (category) {
+                  return category.id === selectedCategory;
+              });
+
+              selectedCategoryData.subcategories.forEach(function (subcategory) {
+                  var option = document.createElement('option');
+                  option.value = subcategory.id;
+                  option.textContent = subcategory.name;
+                  subcategorySelect.appendChild(option);
+              });
+          });
+      }
   }
-}
+
+  // Initialize the category select on page load
+  window.onload = loadCategories;
 </script>

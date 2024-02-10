@@ -1,4 +1,47 @@
-{"Алматы": {
-    "Бостандық ауданы": ["asdads", "asdasdsad", "asdasds"],
-    "Алатау ауданы": ["asdads", "asdasdsad", "asdasds"]
-}}
+{
+    "categories": [
+      {
+        "id": "1",
+        "name": "Electronics",
+        "subcategories": [
+          {
+            "id": "101",
+            "name": "Mobile Phones"
+          },
+          {
+            "id": "102",
+            "name": "Laptops"
+          }
+        ]
+      },
+      {
+        "id": "2",
+        "name": "Clothing",
+        "subcategories": [
+          {
+            "id": "201",
+            "name": "Men's Clothing"
+          },
+          {
+            "id": "202",
+            "name": "Women's Clothing"
+          }
+        ]
+      },
+      {
+        "id": "3",
+        "name": "Books",
+        "subcategories": [
+          {
+            "id": "301",
+            "name": "Fiction"
+          },
+          {
+            "id": "302",
+            "name": "Non-Fiction"
+          }
+        ]
+      }
+    ]
+  }
+  
