@@ -14,6 +14,6 @@ def create_ad(request):
         print(request.POST)
         #col = db()['ads']
         #x = col.insert_one(request.POST.dict())
-        return HttpResponse('ok')
+        return render(request, 'main/create_ad.html')
     else:
         return render(request, 'main/create_ad.html')

@@ -1,0 +1,39 @@
+<div class="container mt-3">
+    <div class="d-flex justify-content-between">
+
+        <!--Logo-->
+        <div>
+            Logo
+        </div>
+
+        <!--Select-->
+        <div>
+
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active" data-bs-toggle="pill" href="#ad_looking">Ищу на подселение</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="pill" href="#ad_go">Пойду на подселение</a>
+                </li>
+            </ul>
+
+        </div>
+
+        <!--Profile-->
+        <div>
+            Profile
+        </div>
+
+    </div>
+
+    <!--Search bar-->
+    <div class="d-flex justify-content-center mt-4">
+
+        <div class="tab-content">
+            <div class="tab-pane container active" id="ad_looking">{% include '../include/ad_looking.html' %}</div>
+            <div class="tab-pane container fade" id="ad_go">{% include '../include/ad_go.html' %}</div>
+        </div>
+
+    </div>
+</div>
