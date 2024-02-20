@@ -1,68 +1,50 @@
 <form method="post" action="{% url 'create_ad' %}">
     {% csrf_token %}
-    <label for="category">Select Category:</label>
-    <select id="category" onchange="loadSubcategories()" name="city">
-        <option value="">Select</option>
+    <label for="city">Выберите город:</label>
+    <select id="city" onchange="loadSubcategories()" name="city">
+        <option value=""></option>
     </select>
     
-    <label for="subcategory">Select Subcategory:</label>
-    <select id="subcategory" name="district">
-        <option value="">Select</option>
+    <label for="district">Выберите район:</label>
+    <select id="district" name="district">
+        <option value=""></option>
     </select>
     <button type="submit">Отправить</button>
 </form>
 
 
 <script>
-  // Function to load options from JSON file
-  function loadOptions(callback) {
-      // You can replace 'options.json' with the path to your JSON file
-      fetch('../../static/base/cities.json')
-          .then(response => response.json())
-          .then(data => callback(data))
-          .catch(error => console.error('Error loading options:', error));
-  }
+    function loadOptions(callback) {
+    fetch('../../static/base/cities.json')
+        .then(response => response.json())
+        .then(callback)
+        .catch(error => console.error('Error loading options:', error));
+    }
 
-  // Function to populate the category select
-  function loadCategories() {
-      var categorySelect = document.getElementById('category');
-      loadOptions(function (data) {
-          data.categories.forEach(function (category) {
-              var option = document.createElement('option');
-              option.value = category.id;
-              option.textContent = category.name;
-              categorySelect.appendChild(option);
-          });
-      });
-  }
+    function populateSelect(select, items) {
+    select.innerHTML = '<option value=""></option>';
+    items.forEach(item => {
+        var option = new Option(item.name, item.id);
+        select.add(option);
+    });
+    }
 
-  // Function to populate the subcategory select based on the selected category
-  function loadSubcategories() {
-      var categorySelect = document.getElementById('category');
-      var subcategorySelect = document.getElementById('subcategory');
-      
-      // Clear subcategory options
-      subcategorySelect.innerHTML = '<option value="">Select</option>';
-      
-      // Get selected category value
-      var selectedCategory = categorySelect.value;
-      
-      if (selectedCategory !== "") {
-          loadOptions(function (data) {
-              var selectedCategoryData = data.categories.find(function (category) {
-                  return category.id === selectedCategory;
-              });
+    function loadCategories() {
+    loadOptions(data => populateSelect(document.getElementById('city'), data.cities));
+    }
 
-              selectedCategoryData.subcategories.forEach(function (subcategory) {
-                  var option = document.createElement('option');
-                  option.value = subcategory.id;
-                  option.textContent = subcategory.name;
-                  subcategorySelect.appendChild(option);
-              });
-          });
-      }
-  }
+    function loadSubcategories() {
+    var categorySelect = document.getElementById('city');
+    var subcategorySelect = document.getElementById('district');
+    subcategorySelect.innerHTML = '<option value=""></option>';
+    var selectedCategory = categorySelect.value;
+    if (selectedCategory !== "") {
+        loadOptions(data => {
+        var selectedCategoryData = data.cities.find(category => category.id === selectedCategory);
+        populateSelect(subcategorySelect, selectedCategoryData.districts);
+        });
+    }
+    }
 
-  // Initialize the category select on page load
-  window.onload = loadCategories;
+    window.onload = loadCategories;
 </script>

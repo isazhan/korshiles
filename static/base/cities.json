@@ -1,47 +1,18 @@
 {
-    "categories": [
+    "cities": [
       {
         "id": "1",
-        "name": "Electronics",
-        "subcategories": [
-          {
-            "id": "101",
-            "name": "Mobile Phones"
-          },
-          {
-            "id": "102",
-            "name": "Laptops"
-          }
+        "name": "Алматы",
+        "districts": [
+          {"id": "101","name": "Алатауский"},
+          {"id": "102","name": "Алмалинский"},
+          {"id": "103","name": "Аузовский"},
+          {"id": "104","name": "Бостандыкский"},
+          {"id": "105","name": "Жетысуский"},
+          {"id": "106","name": "Медеуский"},
+          {"id": "107","name": "Наурызбайский"},
+          {"id": "108","name": "Турксибский"}
         ]
-      },
-      {
-        "id": "2",
-        "name": "Clothing",
-        "subcategories": [
-          {
-            "id": "201",
-            "name": "Men's Clothing"
-          },
-          {
-            "id": "202",
-            "name": "Women's Clothing"
-          }
-        ]
-      },
-      {
-        "id": "3",
-        "name": "Books",
-        "subcategories": [
-          {
-            "id": "301",
-            "name": "Fiction"
-          },
-          {
-            "id": "302",
-            "name": "Non-Fiction"
-          }
-        ]
-      }
+      }      
     ]
-  }
-  
+  }  
