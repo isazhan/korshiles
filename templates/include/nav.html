@@ -6,27 +6,31 @@
             Logo
         </div>
 
-        <!--Select-->
-        <div>
-
-            <ul class="nav nav-pills">
-                <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="pill" href="#ad_looking">Ищу на подселение</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="pill" href="#ad_go">Пойду на подселение</a>
-                </li>
-            </ul>
-
-        </div>
-
         <!--Profile-->
         <div>
-            Profile
+
+            <a class="btn btn-secondary" href="{% url 'create_ad' %}">Подать объявление</a>
+            <a class="btn btn-success" href="{% url 'login' %}">Войти</a>
+            <a class="btn btn-primary" href="{% url 'signup' %}">Зарегистрироваться</a>
+
         </div>
 
     </div>
 
+
+    <!--Select-->
+    <div class="d-flex justify-content-center">
+        <ul class="nav nav-pills">
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="pill" href="#ad_looking">Ищу на подселение</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="pill" href="#ad_go">Пойду на подселение</a>
+            </li>
+        </ul>
+    </div>
+
+    
     <!--Search bar-->
     <div class="d-flex justify-content-center mt-4">
 

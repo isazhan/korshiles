@@ -4,18 +4,23 @@
 <!-- Latest compiled JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Nav pills -->
-<ul class="nav nav-pills">
-    <li class="nav-item">
-        <a class="nav-link active" data-bs-toggle="pill" href="#ad_looking">Ищу на подселение</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" data-bs-toggle="pill" href="#ad_go">Пойду на подселение</a>
-    </li>
-</ul>
-  
-  <!-- Tab panes -->
-<div class="tab-content">
-    <div class="tab-pane container active" id="ad_looking">{% include '../include/ad_looking.html' %}</div>
-    <div class="tab-pane container fade" id="ad_go">{% include '../include/ad_go.html' %}</div>
-</div>
+
+<body>
+    
+    <!-- Nav pills -->
+    <ul class="nav nav-pills">
+        <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="pill" href="#ad_looking">Ищу на подселение</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="pill" href="#ad_go">Пойду на подселение</a>
+        </li>
+    </ul>
+    
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div class="tab-pane container active" id="ad_looking">{% include '../include/ad_looking.html' %}</div>
+        <div class="tab-pane container fade" id="ad_go">{% include '../include/ad_go.html' %}</div>
+    </div>
+
+</body>

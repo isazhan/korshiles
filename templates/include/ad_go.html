@@ -1,5 +1,6 @@
 <form method="post" action="{% url 'create_ad' %}">
     {% csrf_token %}
+    <input type="hidden" name="type" value="ad_go">
     <label for="city">Выберите город:</label>
     <select id="city" onchange="loadSubcategories()" name="city">
         <option value=""></option>
