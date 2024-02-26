@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from .forms import CustomUserCreationForm  # Create a form for user creation
 from django.contrib import messages
 
@@ -24,7 +24,12 @@ def login_user(request):
         if user is not None:
             login(request, user)
             messages.success(request, 'Login successful.')
-            return redirect('/')  # Change 'home' to your desired home page
+            return redirect('/')
         else:
             messages.error(request, 'Invalid login credentials.')
     return render(request, 'users/login.html')
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('/')
