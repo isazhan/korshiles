@@ -2,17 +2,128 @@
 
 {% block content %}
 
-<h2>Login</h2>
-<form method="post" action="{% url 'login' %}">
-    {% csrf_token %}
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
-    <br>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
-    <br>
-    <button type="submit">Login</button>
-</form>
-<p>Don't have an account? <a href="{% url 'signup' %}">Sign up</a></p>
+<main>
+    <div class="container">
 
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+              <div class="d-flex justify-content-center py-4">
+                <a href="index.html" class="logo d-flex align-items-center w-auto">
+                  <img src="assets/img/logo.png" alt="">
+                  <span class="d-none d-lg-block">Korshiles</span>
+                </a>
+              </div><!-- End Logo -->
+
+              <div class="card mb-3">
+
+                <div class="card-body">
+
+                  <div class="pt-4 pb-2">
+                    <h5 class="card-title text-center pb-0 fs-4">Вход в личный кабинет</h5>
+                  </div>
+                  
+
+                <form id="signup-form" class="row g-3">
+
+					<div class="col-12" id="phone_number_div">
+						<label for="phone_number" class="form-label">Номер телефона</label>
+						<div class="input-group">
+							<span class="input-group-text" id="inputGroupPrepend">+7</span>
+							<input type="number" id="phone_number" name="phone_number" class="form-control">
+							<div class="invalid-feedback">Please write a phonenumber".</div>
+						</div>
+					</div>
+
+					<div class="col-12" id="code_div" style="display:none;">
+						<label for="auth_code" class="form-label">Код верификации</label>
+						<div class="input-group">
+							<input type="number" id="code" name="code" class="form-control">
+							<div class="invalid-feedback">Please write a code".</div>
+						</div>
+					</div>
+
+                    <div class="col-12" id="password_div" style="display:none;">
+						<label for="password" class="form-label">Пароль</label>
+						<div class="input-group has-validation">							
+							<input type="password" id="password" name="password" class="form-control">
+							<div class="invalid-feedback">Please write a password".</div>
+						</div>
+					</div>
+
+                    <div class="col-12" id="password_again_div" style="display:none;">
+						<label for="password_again" class="form-label">Пароль еще раз</label>
+						<div class="input-group has-validation">							
+							<input type="password" id="password_again" name="password_again" class="form-control">
+							<div class="invalid-feedback">Please write a password".</div>
+						</div>
+					</div>
+
+					<div class="col-12">
+						<button type="button" class="btn btn-primary w-100" id="send-code-btn" onclick="login()">Продолжить</button>
+					</div>
+
+                </form>				
+
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+  <!-- End #main -->
+
+<script type="text/javascript">
+
+    function login() {
+
+        var phone_number = document.getElementById('phone_number');
+        var code = document.getElementById('code');
+        var password = document.getElementById('password');
+        var password_again = document.getElementById('password_again');
+
+        var code_div = document.getElementById('code_div');
+        var password_div = document.getElementById('password_div');
+        var password_again_div = document.getElementById('password_again_div');
+        
+        $.ajax({
+            url: "{% url 'login' %}",
+            type: "POST",
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'phone_number': 7+phone_number.value,
+                'code': code.value,
+                'password': password.value,
+            },
+            success: function(response) {
+                console.log(response);
+                if (response == 'code_sent') {
+                    code_div.style.display = 'block';
+                }
+                if (response == 'user_exist') {
+                    password_div.style.display = 'block';
+                }
+                if (response == 'code_accept') {
+                    code_div.style.display = 'none';
+                    code.value = '';
+                    password_div.style.display = 'block';
+                    password_again_div.style.display = 'block';
+                }
+                if (response == 'login') {
+                    document.location.href="/";
+                }
+            }
+        });
+    }
+
+
+</script>
 {% endblock content %}
