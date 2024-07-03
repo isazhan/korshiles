@@ -16,15 +16,3 @@ def index(request):
 
     template = loader.get_template('main/index.html')
     return HttpResponse(template.render(context, request))
-
-
-@login_required
-def create_ad(request):
-    if request.method == 'POST':
-        print('POST')
-        print(request.POST)
-        col = db()['ads']
-        x = col.insert_one(request.POST.dict())
-        return index(request)
-    else:
-        return render(request, 'main/create_ad.html')

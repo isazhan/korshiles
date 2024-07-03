@@ -1,56 +1,62 @@
-<div class="container mt-3">
-    <div class="d-flex justify-content-between">
+<header id="header" class="header fixed-top d-flex align-items-center">
 
-        <!--Logo-->
-        <div>
-            Logo
-        </div>
-
-        <!--Profile-->
-        <div class="navbar navbar-expand-sm">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="btn btn-secondary" href="{% url 'create_ad' %}">Подать объявление</a>
-                </li>
-                <li class="dropdown">
-                    <a class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">Кабинет</a>
-                    <ul class="dropdown-menu">
-                        {% if user.is_authenticated %}
-                        <li><a class="dropdown-item" href="">Мои объявления</a></li>
-                        <li><hr class="dropdown-divider"></li>
-                        <li><a class="dropdown-item" href="{% url 'logout' %}">Выйти</a></li>
-                        {% else %}
-                        <li><a class="dropdown-item" href="{% url 'login' %}">Войти</a></li>
-                        <li><a class="dropdown-item" href="{% url 'signup' %}">Зарегистрироваться</a></li>
-                        {% endif %}
-                    </ul>
-                </li>
-            </ul>
-        </div>
-
+    <div class="d-flex align-items-center justify-content-between">
+      <a href="/" class="logo d-flex align-items-center">
+        <img src="assets/img/logo.png" alt="">
+        <span class="d-none d-lg-block">Korshiles</span>
+      </a>
+      
     </div>
-
-
-    <!--Select-->
-    <div class="d-flex justify-content-center">
-        <ul class="nav nav-pills">
-            <li class="nav-item">
-                <a class="nav-link active" data-bs-toggle="pill" href="#ad_looking">Ищу на подселение</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="pill" href="#ad_go">Пойду на подселение</a>
-            </li>
-        </ul>
-    </div>
-
     
-    <!--Search bar-->
-    <div class="d-flex justify-content-center mt-4">
 
-        <div class="tab-content">
-            <div class="tab-pane container active" id="ad_looking">{% include '../include/ad_looking.html' %}</div>
-            <div class="tab-pane container fade" id="ad_go">{% include '../include/ad_go.html' %}</div>
-        </div>
+    <nav class="header-nav ms-auto">
+      <ul class="d-flex align-items-center">
 
-    </div>
-</div>
+        {% if user.is_authenticated %}
+        <li class="nav-item pe-3">
+            <a class="btn btn-primary rounded-pill" href="{% url 'create_ad' %}">Подать объявление</a>
+        </li>
+
+        <li class="nav-item dropdown pe-3">
+
+          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            <span class="d-none d-md-block dropdown-toggle ps-2">{{ user }}</span>
+          </a><!-- End Profile Iamge Icon -->
+
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+            <li class="dropdown-header">
+              <h6>{{ user }}</h6>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="#">
+                <i class="bi bi-person"></i>
+                <span>Мои объявления</span>
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>            
+
+            <li>
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'logout' %}">
+                <i class="bi bi-box-arrow-right"></i>
+                <span>Выйти</span>
+              </a>
+            </li>
+
+          </ul>
+        </li>
+        {% else %}
+        <li class="nav-item pe-3">
+            <a class="btn btn-primary rounded-pill" href="{% url 'login' %}">Войти / Подать объявление</a>
+        </li>        
+        {% endif %}
+
+      </ul>
+    </nav>
+
+</header>
