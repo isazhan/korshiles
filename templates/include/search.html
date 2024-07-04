@@ -1,0 +1,74 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Поиск объявления</h5>
+
+        <form class="row g-3" method="POST" action="{% url 'search' %}">
+
+            <div class="col-md-2">
+                <label for="inputState" class="form-label">Тип объявления</label>
+                <select id="inputState" class="form-select" name="type">
+                    <option value="ad_look" selected>Ищу на подселение</option>
+                    <option value="ad_go">Пойду на подселение</option>
+                </select>
+            </div>            
+
+            <div class="col-md-2">
+                <label for="city" class="form-label">Город</label>
+                <select id="city" onchange="loadSubcategories()" name="city" class="form-select">
+                    <option value=""></option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label for="district" class="form-label">Район</label>
+                <select id="district" name="district" class="form-select">
+                    <option value=""></option>
+                </select>
+            </div>
+
+            <div class="col-md-2">
+                <label for="rental" class="form-label">Стоимость аренды</label>
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="floatingName" placeholder="От" name="rental_from">
+                    <label for="rental_from">От</label>
+                </div>
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="floatingName" placeholder="До" name="rental_upto">
+                    <label for="rental_upto">До</label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <label for="utilities" class="form-label">Стоимость комунальных услуг</label>
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="floatingName" placeholder="От" name="utilities_from">
+                    <label for="floatingName">От</label>
+                </div>
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="floatingName" placeholder="До" name="utilities_upto">
+                    <label for="floatingName">До</label>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <label for="deposit" class="form-label">Депозит</label>
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="floatingName" placeholder="От" name="deposit_from">
+                    <label for="floatingName">От</label>
+                </div>
+                <div class="form-floating">
+                    <input type="number" class="form-control" id="floatingName" placeholder="До" name="deposit_upto">
+                    <label for="floatingName">До</label>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Поиск</button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<script src="/static/js/search.js"></script>

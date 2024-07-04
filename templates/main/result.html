@@ -1,0 +1,45 @@
+{% extends '../base/base-index.html' %}
+
+{% block content %}
+
+<main id="main" class="main" style="margin-left: 0px;">
+    <section class="section">
+
+        {% include '../include/search.html' %}
+
+        <div class="row">
+            <!-- Result -->
+            <div class="col-xl-8">
+                <div class="pagetitle">
+                    <h1>Результаты поиска</h1>
+                </div>
+
+                {% for x in doc %}
+                    <div class="card mb-3">
+                        <div class="row g-0">
+                          <div class="col-md-4">
+                            <img src="#" class="img-fluid rounded-start" alt="...">
+                          </div>
+                          <div class="col-md-8">
+                            <div class="card-body">
+                              <h5 class="card-title">{{ x.district }}</h5>
+                              <p class="card-text">{{ x.info }}</p>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+           
+
+            <!-- Right bar -->
+            <div class="col-xl-4">
+
+            </div>
+
+        </div>
+        
+    </section>
+</main>
+
+{% endblock content %}

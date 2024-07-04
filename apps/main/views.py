@@ -16,3 +16,18 @@ def index(request):
 
     template = loader.get_template('main/index.html')
     return HttpResponse(template.render(context, request))
+
+
+def search(request):
+    print(request.GET)
+    col = db()['ads']
+    doc = col.find({
+        'type': request.GET['type'],
+        'city': request.GET['city'],
+        'district': request.GET['district'],
+        '$and': [{'rental': {'$gt': request.GET['rental_from']}},
+                {'rental': {'$lt': request.GET['rental_upto']}}],
+    })
+    context = {'doc': doc}
+    template = loader.get_template('main/result.html')
+    return HttpResponse(template.render(context, request))
