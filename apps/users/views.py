@@ -59,7 +59,7 @@ def logout_user(request):
 def send_whatsapp_code(phone_number):
     code = random.randint(1000,9999)
     codes[phone_number] = code
-
+    print('code created')
     # Start Chromedriver
     options = webdriver.ChromeOptions()
     data = os.getcwd() + '/driver/driver-data'
@@ -70,14 +70,26 @@ def send_whatsapp_code(phone_number):
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-software-rasterizer')
     options.add_argument('user-agent=User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36')
-
+    print('options setted')
     service = webdriver.ChromeService(executable_path=binary_path)
     driver = webdriver.Chrome(service=service, options=options)
-    
+    print('driver start')
     text = str(code)
 
     driver.get('https://web.whatsapp.com/send/?phone=' + str(phone_number) + '&text=' + text)
-    time.sleep(20)
+    print('url setted')
+
+    while True:
+        print('while')
+        try:
+            MESSAGE_INPUT = "//div[@contenteditable='true'][@data-tab='10']"
+            message_input = driver.find_element("xpath", MESSAGE_INPUT)
+            break
+        except:
+            pass
+        time.sleep(2)
+
     webdriver.ActionChains(driver).send_keys(webdriver.common.keys.Keys.RETURN).perform()
+    print('code sent')
     time.sleep(2)
     driver.quit()
