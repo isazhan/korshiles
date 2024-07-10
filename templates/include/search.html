@@ -2,7 +2,7 @@
     <div class="card-body">
         <h5 class="card-title">Поиск объявления</h5>
 
-        <form class="row g-3" method="POST" action="{% url 'search' %}">
+        <form class="row g-3" method="GET" action="{% url 'search' %}">
 
             <div class="col-md-2">
                 <label for="inputState" class="form-label">Тип объявления</label>
@@ -29,11 +29,11 @@
             <div class="col-md-2">
                 <label for="rental" class="form-label">Стоимость аренды</label>
                 <div class="form-floating">
-                    <input type="number" class="form-control" id="floatingName" placeholder="От" name="rental_from">
+                    <input type="number" class="form-control" id="floatingName" placeholder="От" name="rental_min">
                     <label for="rental_from">От</label>
                 </div>
                 <div class="form-floating">
-                    <input type="number" class="form-control" id="floatingName" placeholder="До" name="rental_upto">
+                    <input type="number" class="form-control" id="floatingName" placeholder="До" name="rental_max">
                     <label for="rental_upto">До</label>
                 </div>
             </div>
@@ -41,11 +41,11 @@
             <div class="col-md-2">
                 <label for="utilities" class="form-label">Стоимость комунальных услуг</label>
                 <div class="form-floating">
-                    <input type="number" class="form-control" id="floatingName" placeholder="От" name="utilities_from">
+                    <input type="number" class="form-control" id="floatingName" placeholder="От" name="utilities_min">
                     <label for="floatingName">От</label>
                 </div>
                 <div class="form-floating">
-                    <input type="number" class="form-control" id="floatingName" placeholder="До" name="utilities_upto">
+                    <input type="number" class="form-control" id="floatingName" placeholder="До" name="utilities_max">
                     <label for="floatingName">До</label>
                 </div>
             </div>
@@ -53,11 +53,11 @@
             <div class="col-md-2">
                 <label for="deposit" class="form-label">Депозит</label>
                 <div class="form-floating">
-                    <input type="number" class="form-control" id="floatingName" placeholder="От" name="deposit_from">
+                    <input type="number" class="form-control" id="floatingName" placeholder="От" name="deposit_min">
                     <label for="floatingName">От</label>
                 </div>
                 <div class="form-floating">
-                    <input type="number" class="form-control" id="floatingName" placeholder="До" name="deposit_upto">
+                    <input type="number" class="form-control" id="floatingName" placeholder="До" name="deposit_max">
                     <label for="floatingName">До</label>
                 </div>
             </div>

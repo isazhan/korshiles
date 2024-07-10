@@ -19,15 +19,28 @@ def index(request):
 
 
 def search(request):
+    print('Request')
     print(request.GET)
+    data = request.GET.dict()
+    print(data)
+    filter_dict = {}
+    for key, value in data.items():
+        if key.endswith('_min') or key.endswith('_max'):
+            field, range_type = key.rsplit('_', 1)
+            if field not in filter_dict:
+                filter_dict[field] = {}
+            if not value == '':
+                if range_type == 'min':
+                    filter_dict[field]['$gte'] = int(value)
+                elif range_type == 'max':
+                    filter_dict[field]['$lte'] = int(value)
+        else:
+            if not value == '':
+                filter_dict[key] = value
+    print('Filter')
+    print(filter_dict)
     col = db()['ads']
-    doc = col.find({
-        'type': request.GET['type'],
-        'city': request.GET['city'],
-        'district': request.GET['district'],
-        '$and': [{'rental': {'$gt': request.GET['rental_from']}},
-                {'rental': {'$lt': request.GET['rental_upto']}}],
-    })
+    doc = col.find(filter_dict)
     context = {'doc': doc}
     template = loader.get_template('main/result.html')
     return HttpResponse(template.render(context, request))
