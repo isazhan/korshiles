@@ -8,99 +8,37 @@
         {% include '../include/search.html' %}
 
         <div class="pagetitle">
-            <h1>Ad looking</h1>
+            <h1>Ищу на подселение</h1>
         </div>
 
         <div class="iconslist">
-            <div class="icon">
-                <i class="bi bi-alarm-fill"></i>
-                <div class="label">alarm-fill</div>
+            {% for x in ad_looking %}
+            <div class="card">
+                <img src="/static/img/no-image.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card with an image on top</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
             </div>
-            <div class="icon">
-                <i class="bi bi-alarm"></i>
-                <div class="label">alarm</div>
-            </div>
-            <div class="icon">
-                <i class="bi bi-align-bottom"></i>
-                <div class="label">align-bottom</div>
-            </div>
-            <div class="icon">
-                <i class="bi bi-align-center"></i>
-                <div class="label">align-center</div>
-            </div>
+            {% endfor %}
         </div>
 
         <div class="pagetitle">
-            <h1>Ad go</h1>
+            <h1>Пойду на подселение</h1>
         </div>
 
         <div class="iconslist">
-            <div class="icon">
-                <i class="bi bi-alarm-fill"></i>
-                <div class="label">alarm-fill</div>
+            {% for x in ad_go %}
+            <div class="card">
+                <img src="/static/img/no-image.png" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">Card with an image on top</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
             </div>
-            <div class="icon">
-                <i class="bi bi-alarm"></i>
-                <div class="label">alarm</div>
-            </div>
-            <div class="icon">
-                <i class="bi bi-align-bottom"></i>
-                <div class="label">align-bottom</div>
-            </div>
-            <div class="icon">
-                <i class="bi bi-align-center"></i>
-                <div class="label">align-center</div>
-            </div>
+            {% endfor %}
         </div>
     </section>
 </main>
-
-
-
-
-
-
-
-    <div class="border-top">
-
-        <!-- Ad looking -->
-        <div class="container-fluid">
-            <h3>Ad looking</h3>
-
-            <div class="row">
-
-                {% for x in ad_looking %}
-                <div class="card" style="max-width: 200px; max-height: 200px;">
-                    <img class="card-img-top" src="" alt="">
-                    <div class="card-body">
-                        <p class="card-text">{{ x.district }}</p>
-                    </div>
-                </div>
-                {% endfor %}
-
-            </div>
-
-        </div>
-
-        <!-- Ad go -->
-        <div  class="container-fluid">
-            <h3>Ad go</h3>
-
-            <div class="row">
-
-                {% for x in ad_go %}
-                <div class="card" style="max-width: 200px; max-height: 200px;">
-                    <img class="card-img-top" src="" alt="">
-                    <div class="card-body">
-                        <p class="card-text">{{ x.district }}</p>
-                    </div>
-                </div>
-                {% endfor %}
-
-            </div>
-
-        </div>
-        
-    </div>
 
 {% endblock content %}
