@@ -31,3 +31,14 @@ def search(request):
     context = {'doc': doc}
     template = loader.get_template('main/result.html')
     return HttpResponse(template.render(context, request))
+
+
+def ad(request, ad):
+    col = db()['ads']
+    doc = col.find_one({'ad': ad})
+    if doc['publish'] == False and request.user.is_superuser == False:
+        index(request)
+    else:
+        context = {'doc': doc}
+        template = loader.get_template('main/ad.html')
+        return HttpResponse(template.render(context, request))
