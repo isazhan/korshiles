@@ -62,7 +62,7 @@ def send_whatsapp_code(phone_number):
 
     # Start Chromedriver
     options = webdriver.ChromeOptions()
-    data = os.getcwd() + '\driver\driver-data'
+    data = os.getcwd() + '/driver/driver-data'
     options.add_argument('--user-data-dir=' + data)
     options.add_argument('--headless=new')
     options.add_argument('--no-sandbox')

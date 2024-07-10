@@ -3,7 +3,7 @@ from chromedriver_py import binary_path
 import time
 import os
 
-data = os.getcwd() + '\driver\driver-data'
+data = os.getcwd() + '/driver/driver-data'
 
 options = webdriver.ChromeOptions()
 options.add_argument('--user-data-dir=' + data)
