@@ -18,23 +18,23 @@ options.add_argument('--user-data-dir=' + data)
 # Options
 #options.add_argument('--headless=new')
 options.add_argument('--no-sandbox')
-options.add_argument('--disable-gpu')
-options.add_argument('--disable-dev-shm-usage')
-options.add_argument('--disable-software-rasterizer')
-options.add_argument("--disable-application-cache")
-options.add_argument("--disable-in-process-stack-traces")
-options.add_argument("--disable-logging")
-options.add_argument("--disable-extensions")
-options.add_argument("--disable-renderer-backgrounding")
-options.add_argument("--disable-background-networking")
-options.add_argument("--disable-background-timer-throttling")
-options.add_argument("--disable-backgrounding-occluded-windows")
-options.add_argument("--disable-breakpad")
-options.add_argument("--disable-component-extensions-with-background-pages")
-options.add_argument("--disable-features=TranslateUI,BlinkGenPropertyTrees")
-options.add_argument("--disable-ipc-flooding-protection")
+#options.add_argument('--disable-gpu')
+#options.add_argument('--disable-dev-shm-usage')
+#options.add_argument('--disable-software-rasterizer')
+##options.add_argument("--disable-application-cache")
+#options.add_argument("--disable-in-process-stack-traces")
+#options.add_argument("--disable-logging")
+#options.add_argument("--disable-extensions")
+#options.add_argument("--disable-renderer-backgrounding")
+#options.add_argument("--disable-background-networking")
+#options.add_argument("--disable-background-timer-throttling")
+#options.add_argument("--disable-backgrounding-occluded-windows")
+#options.add_argument("--disable-breakpad")
+#options.add_argument("--disable-component-extensions-with-background-pages")
+#options.add_argument("--disable-features=TranslateUI,BlinkGenPropertyTrees")
+#options.add_argument("--disable-ipc-flooding-protection")
 #options.add_argument("--single-process")
-options.add_argument('user-agent=User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36')
+#options.add_argument('user-agent=User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36')
 print('options setted')
 
 
@@ -70,6 +70,12 @@ while True:
         authcode = driver.find_element("xpath", AUTH_CODE)
         authcode = authcode.get_attribute(AUTH_CODE_ATTRIBUTE)
         print('Auth code: ' + str(authcode))
+
+    if x == 'test_send':
+        driver.get('https://web.whatsapp.com/send/?phone=77073243307&text=test')
+
+    if x == 'enter':
+        webdriver.ActionChains(driver).send_keys(webdriver.common.keys.Keys.RETURN).perform()
 
     if x == 'exit':
         driver.quit()
