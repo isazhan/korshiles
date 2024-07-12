@@ -3,3 +3,4 @@ __pycache__/
 migrations/
 driver-data/
 dbconfig.json
+image.png

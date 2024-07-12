@@ -86,7 +86,7 @@ def send_whatsapp_code(phone_number):
     options.add_argument("--disable-features=TranslateUI,BlinkGenPropertyTrees")
     options.add_argument("--disable-ipc-flooding-protection")
     #options.add_argument("--single-process")
-    options.add_argument('user-agent=User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36')
+    #options.add_argument('user-agent=User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36')
     print('options setted')
     service = webdriver.ChromeService(executable_path=binary_path)
     driver = webdriver.Chrome(service=service, options=options)
@@ -109,6 +109,6 @@ def send_whatsapp_code(phone_number):
 
     webdriver.ActionChains(driver).send_keys(webdriver.common.keys.Keys.RETURN).perform()
     print('code sent')
-    time.sleep(2)
+    time.sleep(10)
     driver.quit()
     display.stop()
