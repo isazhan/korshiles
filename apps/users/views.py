@@ -8,6 +8,7 @@ from chromedriver_py import binary_path
 from django.views.decorators.csrf import csrf_exempt
 from db import get_db_handle as db
 import time, os
+from pyvirtualdisplay import Display
 
 
 codes = {}
@@ -61,10 +62,13 @@ def send_whatsapp_code(phone_number):
     codes[phone_number] = code
     print('code created')
     # Start Chromedriver
+    display = Display(visible=0, size=(1920, 1080))
+    display.start()
+    print('display start')
     options = webdriver.ChromeOptions()
     data = os.getcwd() + '/driver/driver-data'
     options.add_argument('--user-data-dir=' + data)
-    options.add_argument('--headless=new')
+    #options.add_argument('--headless=new')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-gpu')
     options.add_argument('--disable-dev-shm-usage')
@@ -81,7 +85,7 @@ def send_whatsapp_code(phone_number):
     options.add_argument("--disable-component-extensions-with-background-pages")
     options.add_argument("--disable-features=TranslateUI,BlinkGenPropertyTrees")
     options.add_argument("--disable-ipc-flooding-protection")
-    options.add_argument("--single-process")
+    #options.add_argument("--single-process")
     options.add_argument('user-agent=User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36')
     print('options setted')
     service = webdriver.ChromeService(executable_path=binary_path)
@@ -97,6 +101,7 @@ def send_whatsapp_code(phone_number):
         try:
             MESSAGE_INPUT = "//div[@contenteditable='true'][@data-tab='10']"
             message_input = driver.find_element("xpath", MESSAGE_INPUT)
+            time.sleep(2)
             break
         except:
             pass
@@ -106,3 +111,4 @@ def send_whatsapp_code(phone_number):
     print('code sent')
     time.sleep(2)
     driver.quit()
+    display.stop()
