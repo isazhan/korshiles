@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.template import loader
 from django.http import HttpResponse
@@ -50,7 +50,7 @@ def ad(request, ad):
     col = db()['ads']
     doc = col.find_one({'ad': ad})
     if doc['publish'] == False and request.user.is_superuser == False:
-        index(request)
+        return redirect(index)
     else:
         context = {'doc': doc}
         template = loader.get_template('main/ad.html')

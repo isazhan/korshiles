@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.main',
     'apps.cabinet',
+    'django.contrib.sitemaps',
 ]
 
 MIDDLEWARE = [
