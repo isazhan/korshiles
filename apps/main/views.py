@@ -7,8 +7,8 @@ from db import get_db_handle as db
 
 def index(request):
     col = db()['ads']
-    ad_go = col.find({'type': 'ad_go'}).limit(10)
-    ad_looking = col.find({'type': 'ad_looking'}).limit(10)
+    ad_go = col.find({'type': 'ad_go', 'publish': True}).limit(10)
+    ad_looking = col.find({'type': 'ad_looking', 'publish': True}).limit(10)
     context = {
         'ad_go': ad_go,
         'ad_looking': ad_looking,
@@ -49,7 +49,7 @@ def search(request):
 def ad(request, ad):
     col = db()['ads']
     doc = col.find_one({'ad': ad})
-    if doc['publish'] == False and request.user.is_superuser == False:
+    if doc['publish'] == False and request.user.is_staff == False:
         return redirect(index)
     else:
         context = {'doc': doc}

@@ -8,5 +8,16 @@
             </a>
         </li>
 
+        {% if user.is_staff %}
+        <li class="nav-heading">Админ</li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'check_ad' %}">
+                <i class="bi bi-card-checklist"></i>
+                <span>Объявления на проверку</span>
+            </a>            
+        </li>
+        {% endif %}
+
     </ul>
 </aside>
