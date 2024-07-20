@@ -38,3 +38,17 @@ def check_ad(request):
 
     template = loader.get_template('cabinet/check_ad.html')
     return HttpResponse(template.render(context, request))
+
+
+@login_required
+def check_result(request):
+    if request.method == 'POST':
+        col = db()['ads']
+        query = { "ad": int(request.POST['ad']) }
+        if request.POST['result'] == 'accept':
+            values = { "$set": { "publish": True } }
+            col.update_one(query, values)
+        if request.POST['result'] == 'reject':
+            col.delete_one(query)
+
+        return HttpResponse('success')
