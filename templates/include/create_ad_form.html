@@ -1,0 +1,55 @@
+<form method="post" action="{% url 'create_ad' %}">
+    {% csrf_token %}
+    <div class="list-group">
+
+        <div class="list-group-item">
+            <h4>Тип объявления</h4>
+
+            <select name="type">
+                <option value="ad_look" selected>Ищу на подселение</option>
+                <option value="ad_go">Пойду на подселение</option>
+            </select>
+        </div>
+
+        <div class="list-group-item">
+            <h4>Местоположение</h4>
+
+            <label for="city">Выберите город:</label>
+            <select id="city" onchange="loadSubcategories()" name="city">
+                <option value=""></option>
+            </select>
+
+            <br>
+
+            <label for="district">Выберите район:</label>
+            <select id="district" name="district">
+                <option value=""></option>
+            </select>
+
+            <br>
+
+            <label for="address">Адрес:</label>
+            <input type="text" name="address">
+        </div>
+
+
+        <div class="list-group-item">
+            <h4>Описание</h4>
+
+            <textarea name="info" rows="5" style="width: 100%;"></textarea>
+        </div>
+
+        <div class="list-group-item">
+            <h4>Контакты</h4>
+
+            <input type="number" name="contact" value="{{ user }}">            
+        </div>
+
+        <div class="list-group-item">
+            <button type="submit" >Отправить</button>
+        </div>
+
+    </div>    
+</form>
+
+<script src="/static/js/search.js"></script>
