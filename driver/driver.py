@@ -3,6 +3,9 @@ from chromedriver_py import binary_path
 import time
 import os
 from pyvirtualdisplay import Display
+from telegram import Bot
+import asyncio
+import json
 
 
 display = Display(visible=0, size=(1920, 1080))
@@ -53,34 +56,46 @@ AUTH_CODE = "//div[@aria-details='link-device-phone-number-code-screen-instructi
 AUTH_CODE_ATTRIBUTE = 'data-link-code'
 
 
-while True:
-    driver.save_screenshot('image.png')
-    x = input('Enter command')
+async def send_photo():
+    data = json.load(open('driver/telebot.json'))
+    bot = Bot(token=data['token'])
+    await bot.send_photo(chat_id=data['chatid'], photo=open('image.png', 'rb'))
 
-    if x == 'auth_button':
-        driver.find_element("xpath", AUTH_BUTTON).click()
-    
-    if x == 'auth_number':
-        phone = input('Enter number')
-        authnumber_input = driver.find_element("xpath", AUTH_NUMBER_INPUT)
-        authnumber_input.send_keys(phone)
+
+async def main():
+    while True:
+        driver.save_screenshot('image.png')
+        await send_photo()
+        x = input('Enter command')
+
+        if x == 'auth_button':
+            driver.find_element("xpath", AUTH_BUTTON).click()
+        
+        if x == 'auth_number':
+            phone = input('Enter number')
+            authnumber_input = driver.find_element("xpath", AUTH_NUMBER_INPUT)
+            authnumber_input.send_keys(phone)
+            time.sleep(2)
+            authnumber_input.send_keys(webdriver.common.keys.Keys.RETURN)
+            time.sleep(2)
+            authcode = driver.find_element("xpath", AUTH_CODE)
+            authcode = authcode.get_attribute(AUTH_CODE_ATTRIBUTE)
+            print('Auth code: ' + str(authcode))
+
+        if x == 'test_send':
+            phone = input('Enter number')
+            driver.get('https://web.whatsapp.com/send/?phone=' + str(phone) + '&text=test')
+
+        if x == 'enter':
+            webdriver.ActionChains(driver).send_keys(webdriver.common.keys.Keys.RETURN).perform()
+
+        if x == 'exit':
+            driver.quit()
+            display.stop()
+            break
+
         time.sleep(2)
-        authnumber_input.send_keys(webdriver.common.keys.Keys.RETURN)
-        time.sleep(2)
-        authcode = driver.find_element("xpath", AUTH_CODE)
-        authcode = authcode.get_attribute(AUTH_CODE_ATTRIBUTE)
-        print('Auth code: ' + str(authcode))
 
-    if x == 'test_send':
-        phone = input('Enter number')
-        driver.get('https://web.whatsapp.com/send/?phone=' + str(phone) + '&text=test')
 
-    if x == 'enter':
-        webdriver.ActionChains(driver).send_keys(webdriver.common.keys.Keys.RETURN).perform()
-
-    if x == 'exit':
-        driver.quit()
-        display.stop()
-        break
-
-    time.sleep(2)
+if __name__ == '__main__':
+    asyncio.run(main())
