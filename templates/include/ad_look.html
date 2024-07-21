@@ -1,7 +1,118 @@
 <form method="post" action="{% url 'create_ad' %}">
     {% csrf_token %}
-    <input type="hidden" name="type" value="ad_looking">
-    <input type="text" name="test1" id="">
-    <input type="text" name="test2" id="">
-    <button type="submit">Отправить</button>
+    <div class="list-group">
+
+        <div class="list-group-item">
+            <h4>Местоположение</h4>
+
+            <input type="hidden" name="type" value="ad_go">
+            <label for="city">Выберите город:</label>
+            <select id="city" onchange="loadSubcategories()" name="city">
+                <option value=""></option>
+            </select>
+
+            <br>
+
+            <label for="district">Выберите район:</label>
+            <select id="district" name="district">
+                <option value=""></option>
+            </select>
+
+            <br>
+
+            <label for="address">Адрес:</label>
+            <input type="text" name="address">
+        </div>
+
+        <div class="list-group-item">
+            <h4>О себе</h4>
+
+            <p>Мой пол:</p>
+            <input type="radio" name="my_sex" value="M">
+            <label for="my_sex">Мужской</label>
+            <input type="radio" name="my_sex" value="F">
+            <label for="my_sex">Женский</label>
+        </div>
+
+        <div class="list-group-item">
+            <h4>Информация о комнатах</h4>
+
+            <label for="all_room_qty">Общее количество жилых комнат:</label>
+            <input type="number" name="all_room_qty">
+
+            <br>
+
+            <label for="room_qty">Количество свободных комнат:</label>
+            <input type="number" name="room_qty">
+
+            <br>
+
+            <p>Тип комнат:</p>
+            <input type="radio" name="room_type" value="isolated">
+            <label for="room_type">Изолированная</label>
+            <input type="radio" name="room_type" value="unisolated">
+            <label for="room_type">Неизолированная</label>
+        </div>
+
+        <div class="list-group-item">
+            <h4>Информация о потенциальном соседе</h4>
+
+            <label for="qty">Количество людей на подселение:</label>
+            <input type="number">
+
+            <br>
+
+            <p>Пол соседа:</p>
+            <input type="radio" name="roommate_sex" value="M">
+            <label for="my_sex">Мужской</label>
+            <input type="radio" name="roommate_sex" value="F">
+            <label for="my_sex">Женский</label>
+            <input type="radio" name="roommate_sex" value="N">
+            <label for="my_sex">Неважно</label>
+
+            <br>
+
+            <label for="date">Дата заселения:</label>
+            <input type="date">
+        </div>
+
+        <div class="list-group-item">
+            <h4>Оплата</h4>
+
+            <label for="rental">Ежемесячная сумма аренды:</label>
+            <input type="number" name="rental">
+            <span>тенге</span>
+
+            <br>
+
+            <label for="utilities">Ежемесячная сумма за ком. услуги:</label>
+            <input type="number" name="utilities">
+            <span>тенге</span>
+
+            <br>
+
+            <label for="deposit">Депозит:</label>
+            <input type="number" name="deposit">
+            <span>тенге</span>
+        </div>
+
+        <div class="list-group-item">
+            <h4>Дополнительная информация</h4>
+
+            <textarea name="info" rows="5" style="width: 100%;"></textarea>
+        </div>
+
+        <div class="list-group-item">
+            <h4>Контакты</h4>
+
+            
+        </div>
+
+        <div class="list-group-item">
+            <button type="submit" >Отправить</button>
+        </div>
+
+    </div>    
 </form>
+
+<script src="/static/js/search.js"></script>
