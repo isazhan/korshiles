@@ -14,13 +14,16 @@
 
                 <div class="card mb-3">
                     <div class="row g-0">
+                        {% if doc.type == 'ad_look' %}
                         <div class="col-md-4">
-                        <img src="#" class="img-fluid rounded-start" alt="...">
+                        <img src="/static/img/no-image.png" class="img-fluid rounded-start" alt="...">
                         </div>
+                        {% endif %}
                         <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">{{ doc.district }}</h5>
+                            <h5 class="card-title"></h5>
                             <p class="card-text">{{ doc.info }}</p>
+                            <p class="card-text">Контакты: {{ doc.contact }}</p>
                         </div>
                         </div>
                     </div>

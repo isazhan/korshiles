@@ -15,19 +15,21 @@
                 </div>
 
                 {% for x in doc %}
+                <a href="{% url 'ad' x.ad %}">
                     <div class="card mb-3">
                         <div class="row g-0">
                           <div class="col-md-4">
-                            <img src="#" class="img-fluid rounded-start" alt="...">
+                            <img src="/static/img/no-image.png" class="img-fluid rounded-start" alt="...">
                           </div>
                           <div class="col-md-8">
                             <div class="card-body">
-                              <h5 class="card-title">{{ x.district }}</h5>
+                              <h5 class="card-title">г. {{x.city}}, {{x.district}} район</h5>
                               <p class="card-text">{{ x.info }}</p>
                             </div>
                           </div>
                         </div>
                     </div>
+                </a>
                 {% endfor %}
             </div>
            
