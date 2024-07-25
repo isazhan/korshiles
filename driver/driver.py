@@ -11,7 +11,7 @@ import threading
 from db import get_db_handle as db
 
 
-display = Display(visible=1, size=(1920, 1080))
+display = Display(visible=0, size=(1920, 1080))
 display.start()
 print('display start')
 

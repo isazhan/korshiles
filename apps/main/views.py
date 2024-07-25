@@ -8,10 +8,10 @@ from db import get_db_handle as db
 def index(request):
     col = db()['ads']
     ad_go = col.find({'type': 'ad_go', 'publish': True}).limit(10)
-    ad_looking = col.find({'type': 'ad_looking', 'publish': True}).limit(10)
+    ad_look = col.find({'type': 'ad_look', 'publish': True}).limit(10)
     context = {
         'ad_go': ad_go,
-        'ad_looking': ad_looking,
+        'ad_look': ad_look,
     }
 
     template = loader.get_template('main/index.html')
