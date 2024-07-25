@@ -3,12 +3,15 @@ from chromedriver_py import binary_path
 import time
 import os
 from pyvirtualdisplay import Display
-from telegram import Bot
+from telegram import Bot, Update
+from telegram.ext import CommandHandler, Updater, CallbackContext
 import asyncio
 import json
+import threading
+from db import get_db_handle as db
 
 
-display = Display(visible=0, size=(1920, 1080))
+display = Display(visible=1, size=(1920, 1080))
 display.start()
 print('display start')
 
@@ -29,7 +32,7 @@ options.add_argument("--disable-in-process-stack-traces")
 options.add_argument("--disable-logging")
 options.add_argument("--disable-extensions")
 options.add_argument("--disable-renderer-backgrounding")
-options.add_argument("--disable-background-networking")
+#options.add_argument("--disable-background-networking")
 options.add_argument("--disable-background-timer-throttling")
 options.add_argument("--disable-backgrounding-occluded-windows")
 options.add_argument("--disable-breakpad")
@@ -49,53 +52,68 @@ print('driver start')
 driver.get('https://web.whatsapp.com/')
 
 
-# Variables
+# Variables whatsapp
 AUTH_BUTTON = "//span[@tabindex=0]"
 AUTH_NUMBER_INPUT = "//input[@aria-required='true']"
 AUTH_CODE = "//div[@aria-details='link-device-phone-number-code-screen-instructions']"
 AUTH_CODE_ATTRIBUTE = 'data-link-code'
+MESSAGE_INPUT = "//div[@contenteditable='true'][@data-tab='10']"
+# Variables telebot
+data = json.load(open('driver/telebot.json'))
+API_TOKEN = data['token']
+CHAT_ID = data['chatid']
+PHOTO_PATH = 'image.png'
 
 
-async def send_photo():
-    data = json.load(open('driver/telebot.json'))
-    bot = Bot(token=data['token'])
-    await bot.send_photo(chat_id=data['chatid'], photo=open('image.png', 'rb'))
+def send_photo(update: Update, context: CallbackContext):
+    driver.save_screenshot(PHOTO_PATH)
+    context.bot.send_photo(chat_id=CHAT_ID, photo=open(PHOTO_PATH, 'rb'))
 
 
-async def main():
+def check_message():
     while True:
-        driver.save_screenshot('image.png')
-        await send_photo()
-        x = input('Enter command')
-
-        if x == 'auth_button':
-            driver.find_element("xpath", AUTH_BUTTON).click()
+        col = db()['whatsapp']
+        doc = col.find_one()
+        if not doc == None:
+            col.delete_one(doc)
         
-        if x == 'auth_number':
-            phone = input('Enter number')
-            authnumber_input = driver.find_element("xpath", AUTH_NUMBER_INPUT)
-            authnumber_input.send_keys(phone)
-            time.sleep(2)
-            authnumber_input.send_keys(webdriver.common.keys.Keys.RETURN)
-            time.sleep(2)
-            authcode = driver.find_element("xpath", AUTH_CODE)
-            authcode = authcode.get_attribute(AUTH_CODE_ATTRIBUTE)
-            print('Auth code: ' + str(authcode))
+            driver.get('https://web.whatsapp.com/send/?phone=' + str(doc['phone']) + '&text=' + str(doc['code']) + '%20-%20Korshiles.kz')
+            
+            while True:
+                print('while')
+                try:
+                    message_input = driver.find_element("xpath", MESSAGE_INPUT)
+                    time.sleep(2)
+                    break
+                except:
+                    pass
+                time.sleep(2)
 
-        if x == 'test_send':
-            phone = input('Enter number')
-            driver.get('https://web.whatsapp.com/send/?phone=' + str(phone) + '&text=test')
-
-        if x == 'enter':
             webdriver.ActionChains(driver).send_keys(webdriver.common.keys.Keys.RETURN).perform()
+            print('code sent')
+            time.sleep(2)
+            webdriver.ActionChains(driver).send_keys(webdriver.common.keys.Keys.ESCAPE).perform()
+        
+        time.sleep(5)
+        print('check message while')
 
-        if x == 'exit':
-            driver.quit()
-            display.stop()
-            break
 
-        time.sleep(2)
+def main():
+    updater = Updater(API_TOKEN, use_context=True)
+    dispatcher = updater.dispatcher
 
+    # Add command handler for /sendphoto
+    dispatcher.add_handler(CommandHandler('sendphoto', send_photo))
+
+    # Start the bot
+    updater.start_polling()
+
+    # Start the periodic function in a separate thread
+    periodic_thread = threading.Thread(target=check_message)
+    periodic_thread.start()
+
+    # Run the bot until you press Ctrl-C
+    updater.idle()
 
 if __name__ == '__main__':
-    asyncio.run(main())
+    main()
