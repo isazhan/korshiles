@@ -55,3 +55,13 @@ def ad(request, ad):
         context = {'doc': doc}
         template = loader.get_template('main/ad.html')
         return HttpResponse(template.render(context, request))
+    
+
+def robots_txt(request):
+    lines = [
+        "User-agent: *",
+        "Disallow: ",
+        "",
+        "Sitemap: https://korshiles.kz/sitemap.xml",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
