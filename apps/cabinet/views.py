@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.template import loader
 from django.http import HttpResponse
@@ -30,10 +30,10 @@ def create_ad(request):
 def check_ad(request):
     col = db()['ads']
     ad_go = col.find({'type': 'ad_go', 'publish': False})
-    ad_looking = col.find({'type': 'ad_looking', 'publish': False})
+    ad_look = col.find({'type': 'ad_look', 'publish': False})
     context = {
         'ad_go': ad_go,
-        'ad_looking': ad_looking,
+        'ad_look': ad_look,
     }
 
     template = loader.get_template('cabinet/check_ad.html')
@@ -52,3 +52,26 @@ def check_result(request):
             col.delete_one(query)
 
         return HttpResponse('success')
+    
+
+@login_required
+def my_ads(request):
+    col = db()['ads']
+
+    ad_go = col.find({'type': 'ad_go', 'author': request.user.phone_number})
+    ad_look = col.find({'type': 'ad_look', 'author': request.user.phone_number})
+    context = {
+        'ad_go': ad_go,
+        'ad_look': ad_look,
+    }
+    template = loader.get_template('cabinet/my_ads.html')
+    return HttpResponse(template.render(context, request))
+
+
+@login_required
+def delete_outdated(request):
+    col = db()['ads']
+    query = {'create_time': {"$lt": time.time()-604800}}
+    x = col.delete_many(query)
+    
+    return redirect(create_ad)

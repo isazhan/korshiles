@@ -18,10 +18,6 @@
                         <h5 class="card-title">г. {{x.city}}, {{x.district}} район</h5>
                         <p class="card-text">{{ x.info }}</p>
                     </div>
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-success" onclick="check_result('{{x.ad}}', 'accept')">Принять</button>
-                        <button type="button" class="btn btn-danger" onclick="check_result('{{x.ad}}', 'reject')">Отклонить</button>
-                    </div>
                 </div>
             </a>
             {% endfor %}
@@ -40,37 +36,11 @@
                         <h5 class="card-title">г. {{x.city}}, {{x.district}} район</h5>
                         <p class="card-text">{{ x.info }}</p>
                     </div>
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-success" onclick="check_result('{{x.ad}}', 'accept')">Принять</button>
-                        <button type="button" class="btn btn-danger" onclick="check_result('{{x.ad}}', 'reject')">Отклонить</button>
-                    </div>
                 </div>
             </a>
             {% endfor %}
         </div>
     </section>
 </main>
-
-<script type="text/javascript">
-
-    function check_result(ad, result) {
-        $.ajax({
-            url: "{% url 'check_result' %}",
-            type: "POST",
-            data: {
-                'csrfmiddlewaretoken': '{{ csrf_token }}',
-                'ad': ad,
-                'result': result,
-            },
-            success: function(response) {
-                console.log(response);
-                if (response == 'success') {
-                    location.reload();
-                }
-            }
-        });
-    }
-
-</script>
 
 {% endblock content %}
