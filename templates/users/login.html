@@ -33,11 +33,14 @@
 						<div class="input-group">
 							<span class="input-group-text" id="inputGroupPrepend">+7</span>
 							<input type="number" id="phone_number" name="phone_number" class="form-control">
-							<div class="invalid-feedback">Please write a phonenumber".</div>
+							<div class="invalid-feedback" id="phone_number_alert">Неправильный формат номера</div>
 						</div>
 					</div>
 
 					<div class="col-12" id="code_div" style="display:none;">
+                        <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                            Код верификации отправлен на ваш Whatsapp
+                        </div>
 						<label for="auth_code" class="form-label">Код верификации</label>
 						<div class="input-group">
 							<input type="number" id="code" name="code" class="form-control">
@@ -47,22 +50,23 @@
 
                     <div class="col-12" id="password_div" style="display:none;">
 						<label for="password" class="form-label">Пароль</label>
-						<div class="input-group has-validation">							
+						<div class="input-group has-validation">
 							<input type="password" id="password" name="password" class="form-control">
 							<div class="invalid-feedback">Please write a password".</div>
 						</div>
+                        <button type="button" class="btn btn-outline-dark btn-sm mt-2" onclick="forget()">Забыли пароль?</button>
 					</div>
 
                     <div class="col-12" id="password_again_div" style="display:none;">
-						<label for="password_again" class="form-label">Пароль еще раз</label>
-						<div class="input-group has-validation">							
+						<label for="password_again" class="form-label">Придумайте пароль</label>
+						<div class="input-group has-validation">
 							<input type="password" id="password_again" name="password_again" class="form-control">
 							<div class="invalid-feedback">Please write a password".</div>
 						</div>
 					</div>
 
 					<div class="col-12">
-						<button type="button" class="btn btn-primary w-100" id="send-code-btn" onclick="login()">Продолжить</button>
+						<button type="button" class="btn btn-primary w-100" id="next_button" onclick="login()">Продолжить</button>
 					</div>
 
                 </form>				
@@ -83,47 +87,83 @@
 
 <script type="text/javascript">
 
-    function login() {
+    var phone_number = document.getElementById('phone_number');
+    var code = document.getElementById('code');
+    var password = document.getElementById('password');
+    var password_again = document.getElementById('password_again');
 
-        var phone_number = document.getElementById('phone_number');
-        var code = document.getElementById('code');
-        var password = document.getElementById('password');
-        var password_again = document.getElementById('password_again');
+    var code_div = document.getElementById('code_div');
+    var password_div = document.getElementById('password_div');
+    var password_again_div = document.getElementById('password_again_div');
 
-        var code_div = document.getElementById('code_div');
-        var password_div = document.getElementById('password_div');
-        var password_again_div = document.getElementById('password_again_div');
-        
+    var button = document.getElementById('next_button');
+    var phone_number_alert = document.getElementById('phone_number_alert');
+
+    document.addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            button.click();
+        }
+    });
+
+    function login() {        
+
+        if (phone_number.value.toString().length == 10) {
+
+            button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Подождите...';
+            button.disabled = true;
+            phone_number.readOnly = true;
+            phone_number_alert.style.display = 'none';
+
+            $.ajax({
+                url: "{% url 'login' %}",
+                type: "POST",
+                data: {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'phone_number': 7+phone_number.value,
+                    'code': code.value,
+                    'password': password.value,
+                },
+                success: function(response) {
+                    console.log(response);
+                    button.innerHTML = 'Продолжить';
+                    button.disabled = false;
+                    if (response == 'code_sent') {
+                        code_div.style.display = 'block';
+                    }
+                    if (response == 'user_exist') {
+                        password_div.style.display = 'block';
+                    }
+                    if (response == 'code_accept') {
+                        code_div.style.display = 'none';
+                        code.value = '';
+                        password_div.style.display = 'block';
+                        password_again_div.style.display = 'block';
+                    }
+                    if (response == 'login') {
+                        document.location.href="/";
+                    }
+                }
+            });
+        } else {
+            phone_number_alert.style.display = 'block';
+        }
+    }
+
+    function forget() {
         $.ajax({
-            url: "{% url 'login' %}",
+            url: "{% url 'forget_password' %}",
             type: "POST",
             data: {
                 'csrfmiddlewaretoken': '{{ csrf_token }}',
                 'phone_number': 7+phone_number.value,
-                'code': code.value,
-                'password': password.value,
             },
             success: function(response) {
-                console.log(response);
-                if (response == 'code_sent') {
-                    code_div.style.display = 'block';
-                }
-                if (response == 'user_exist') {
-                    password_div.style.display = 'block';
-                }
-                if (response == 'code_accept') {
-                    code_div.style.display = 'none';
-                    code.value = '';
-                    password_div.style.display = 'block';
-                    password_again_div.style.display = 'block';
-                }
-                if (response == 'login') {
-                    document.location.href="/";
+                if (response == 'user_deleted') {
+                    login();
                 }
             }
         });
     }
-
 
 </script>
 {% endblock content %}

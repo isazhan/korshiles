@@ -62,3 +62,12 @@ def send_whatsapp_code(phone_number):
     print('code created')
     col = db()['whatsapp']
     x = col.insert_one({'phone': phone_number, 'code': code})
+
+
+def forget_password(request):
+    if request.method == 'POST':
+        phone_number = request.POST['phone_number']
+        User = get_user_model()
+        user = User.objects.get(phone_number=phone_number)
+        user.delete()
+        return HttpResponse('user_deleted')
