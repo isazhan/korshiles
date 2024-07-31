@@ -44,7 +44,7 @@
 						<label for="auth_code" class="form-label">Код верификации</label>
 						<div class="input-group">
 							<input type="number" id="code" name="code" class="form-control">
-							<div class="invalid-feedback">Please write a code".</div>
+							<div class="invalid-feedback" id="code_alert">Неверный код</div>
 						</div>
 					</div>
 
@@ -52,15 +52,15 @@
 						<label for="password" class="form-label">Пароль</label>
 						<div class="input-group has-validation">
 							<input type="password" id="password" name="password" class="form-control">
-							<div class="invalid-feedback">Please write a password".</div>
+							<div class="invalid-feedback" id="password_alert">Неверный пароль</div>
 						</div>
                         <button type="button" class="btn btn-outline-dark btn-sm mt-2" onclick="forget()">Забыли пароль?</button>
 					</div>
 
-                    <div class="col-12" id="password_again_div" style="display:none;">
-						<label for="password_again" class="form-label">Придумайте пароль</label>
+                    <div class="col-12" id="password_new_div" style="display:none;">
+						<label for="password_new" class="form-label">Придумайте пароль</label>
 						<div class="input-group has-validation">
-							<input type="password" id="password_again" name="password_again" class="form-control">
+							<input type="password" id="password_new" name="password_new" class="form-control">
 							<div class="invalid-feedback">Please write a password".</div>
 						</div>
 					</div>
@@ -90,14 +90,16 @@
     var phone_number = document.getElementById('phone_number');
     var code = document.getElementById('code');
     var password = document.getElementById('password');
-    var password_again = document.getElementById('password_again');
+    var password_new = document.getElementById('password_new');
 
     var code_div = document.getElementById('code_div');
     var password_div = document.getElementById('password_div');
-    var password_again_div = document.getElementById('password_again_div');
+    var password_new_div = document.getElementById('password_new_div');
 
     var button = document.getElementById('next_button');
     var phone_number_alert = document.getElementById('phone_number_alert');
+    var password_alert = document.getElementById('password_alert');
+    var code_alert = document.getElementById('code_alert');
 
     document.addEventListener("keypress", function(event) {
         if (event.key === "Enter") {
@@ -122,6 +124,7 @@
                     'phone_number': 7+phone_number.value,
                     'code': code.value,
                     'password': password.value,
+                    'password_new': password_new.value,
                 },
                 success: function(response) {
                     console.log(response);
@@ -136,11 +139,16 @@
                     if (response == 'code_accept') {
                         code_div.style.display = 'none';
                         code.value = '';
-                        password_div.style.display = 'block';
-                        password_again_div.style.display = 'block';
+                        password_new_div.style.display = 'block';
                     }
                     if (response == 'login') {
                         document.location.href="/";
+                    }
+                    if (response == 'password_wrong') {
+                        password_alert.style.display = 'block';
+                    }
+                    if (response == 'code_wrong') {
+                        code_alert.style.display = 'block';
                     }
                 }
             });
@@ -159,6 +167,8 @@
             },
             success: function(response) {
                 if (response == 'user_deleted') {
+                    password.value = '';
+                    password_div.style.display = 'none';
                     login();
                 }
             }

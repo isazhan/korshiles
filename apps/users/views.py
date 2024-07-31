@@ -21,10 +21,11 @@ def login_user(request):
         phone_number = request.POST['phone_number']
         code = request.POST['code']
         password = request.POST['password']
+        password_new = request.POST['password_new']
 
         User = get_user_model()
 
-        if code == '' and password == '':
+        if code == '' and password == '' and password_new == '':
             if User.objects.filter(phone_number=phone_number).exists():
                 return HttpResponse('user_exist')
             else:
@@ -32,19 +33,22 @@ def login_user(request):
                 send_whatsapp_code(phone_number)
                 return HttpResponse('code_sent')
             
-        if not code == '' and password == '':
+        if not code == '' and password == '' and password_new == '':
             if codes[phone_number] == int(code):
                 return HttpResponse('code_accept')
             else:
                 return HttpResponse('code_wrong')
         
-        if code == '' and not password == '':
+        if code == '' and not password == '' or not password_new == '':
             if User.objects.filter(phone_number=phone_number).exists():
                 user = authenticate(phone_number=phone_number, password=password)
             else:
-                user = User.objects.create_user(phone_number, password)
+                user = User.objects.create_user(phone_number, password_new)
                 user.save()
-            login(request, user)
+            try:
+                login(request, user)
+            except:
+                return HttpResponse('password_wrong')
             return HttpResponse('login')
         
     else:
