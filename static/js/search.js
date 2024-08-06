@@ -8,7 +8,7 @@ fetch('../../static/base/cities.json')
 function populateSelect(select, items) {
 select.innerHTML = '<option value=""></option>';
 items.forEach(item => {
-    var option = new Option(item.name, item.id);
+    var option = new Option(item.ru, item.id);
     select.add(option);
 });
 }

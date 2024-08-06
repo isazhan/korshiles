@@ -3,14 +3,13 @@ from django.contrib.auth.decorators import login_required
 from django.template import loader
 from django.http import HttpResponse
 from db import get_db_handle as db
-import time
+from datetime import datetime, timedelta
+import json
 
 
 @login_required
 def create_ad(request):
     if request.method == 'POST':
-        print('POST')
-        print(request.POST)
         data = request.POST.dict()
         col = db()['ads']
         doc = col.find({}, {'_id': 0, 'ad': 1}).sort('_id', -1).limit(1)
@@ -20,8 +19,20 @@ def create_ad(request):
             ad = 100000000
         data['ad'] = ad
         data['author'] = request.user.phone_number
-        data['create_time'] = time.time()
+        data['create_time'] = datetime.now()
         data['publish'] = False
+
+        z = json.load(open('static/base/cities.json', encoding='utf-8'))
+
+        for i in z['cities']:
+            if i['id'] == data['city']:
+                data['city'] = {'id': data['city'], 'ru': i['ru']}
+                for k in i['districts']:
+                    if k['id'] == data['district']:
+                        data['district'] = {'id': data['district'], 'ru': k['ru']}
+                        break
+                break
+
         x = col.insert_one(data)
     return render(request, 'cabinet/create_ad.html')
 
@@ -71,7 +82,7 @@ def my_ads(request):
 @login_required
 def delete_outdated(request):
     col = db()['ads']
-    query = {'create_time': {"$lt": time.time()-604800}}
+    query = {'create_time': {"$lt": datetime.now()-timedelta(days=7)}}
     x = col.delete_many(query)
     
     return redirect(create_ad)

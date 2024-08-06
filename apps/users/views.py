@@ -75,3 +75,4 @@ def forget_password(request):
         user = User.objects.get(phone_number=phone_number)
         user.delete()
         return HttpResponse('user_deleted')
+    return redirect('/')

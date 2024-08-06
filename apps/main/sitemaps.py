@@ -18,14 +18,13 @@ class DynamicViewSitemap(Sitemap):
 
     def items(self):
         col = db()['ads']
-        doc = col.find({}, {'_id': 0, 'ad': 1}).sort('_id', -1).limit(1)
-        try:
-            last_ad = doc[0]['ad'] + 1
-        except:
-            last_ad = 100000000
+        doc = col.find({'publish': True}, {'_id': 0, 'ad': 1})
+        ads = []
+        for i in doc:
+            ads.append(i['ad'])
 
         return [
-            {'name': 'ad', 'ad': i} for i in range(100000000, last_ad)
+            {'name': 'ad', 'ad': i} for i in ads
         ]
 
     def location(self, item):

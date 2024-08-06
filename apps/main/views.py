@@ -34,6 +34,9 @@ def search(request):
                     filter_dict[field]['$gte'] = int(value)
                 elif range_type == 'max':
                     filter_dict[field]['$lte'] = int(value)
+        elif key=='city' or key=='district':
+            if not value == '':
+                filter_dict[key+'.id'] = value
         else:
             if not value == '':
                 filter_dict[key] = value
