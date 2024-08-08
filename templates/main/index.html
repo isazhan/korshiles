@@ -13,15 +13,7 @@
 
         <div class="iconslist">
             {% for x in ad_look %}
-            <a href="{% url 'ad' x.ad %}">
-                <div class="card">
-                    <img src="/static/img/no-image.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">г. {{x.city.ru}}, {{x.district.ru}} район</h5>
-                        <p class="card-text">{{x.create_time|date:"d.m.Y"}}</p>
-                    </div>
-                </div>
-            </a>
+                {% include '../include/ad_card_ver.html' %}
             {% endfor %}
         </div>
 
@@ -31,14 +23,7 @@
 
         <div class="iconslist">
             {% for x in ad_go %}
-            <a href="{% url 'ad' x.ad %}">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">г. {{x.city.ru}}, {{x.district.ru}} район</h5>
-                        <p class="card-text">{{x.create_time|date:"d.m.Y"}}</p>
-                    </div>
-                </div>
-            </a>
+                {% include '../include/ad_card_ver.html' %}
             {% endfor %}
         </div>
     </section>

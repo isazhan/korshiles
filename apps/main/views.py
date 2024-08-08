@@ -7,8 +7,8 @@ from db import get_db_handle as db
 
 def index(request):
     col = db()['ads']
-    ad_go = col.find({'type': 'ad_go', 'publish': True}).limit(10)
-    ad_look = col.find({'type': 'ad_look', 'publish': True}).limit(10)
+    ad_go = col.find({'type': 'ad_go', 'publish': True}).limit(10).sort('create_time', -1)
+    ad_look = col.find({'type': 'ad_look', 'publish': True}).limit(10).sort('create_time', -1)
     context = {
         'ad_go': ad_go,
         'ad_look': ad_look,
@@ -43,7 +43,7 @@ def search(request):
     print('Filter')
     print(filter_dict)
     col = db()['ads']
-    doc = col.find(filter_dict)
+    doc = col.find(filter_dict).sort('create_time', -1)
     context = {'doc': doc}
     template = loader.get_template('main/result.html')
     return HttpResponse(template.render(context, request))

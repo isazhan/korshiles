@@ -69,11 +69,9 @@ def check_result(request):
 def my_ads(request):
     col = db()['ads']
 
-    ad_go = col.find({'type': 'ad_go', 'author': request.user.phone_number})
-    ad_look = col.find({'type': 'ad_look', 'author': request.user.phone_number})
+    my_ads = col.find({'author': request.user.phone_number})
     context = {
-        'ad_go': ad_go,
-        'ad_look': ad_look,
+        'my_ads': my_ads,
     }
     template = loader.get_template('cabinet/my_ads.html')
     return HttpResponse(template.render(context, request))

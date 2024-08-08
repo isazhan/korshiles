@@ -3,43 +3,70 @@
 {% block content %}
 
 <main id="main" class="main" style="margin-left: 0px;">
-    <section class="section">
 
-        <div class="row">
-            <!-- Result -->
-            <div class="col-xl-8">
-                <div class="pagetitle">
-                    <h1>г. {{doc.city.ru}}, {{doc.district.ru}} район</h1>
+    <div class="pagetitle">
+        <h1>г. {{doc.city.ru}}, {{doc.district.ru}} район</h1>
+    </div>
+
+    <section class="section profile">
+      <div class="row">
+        <div class="col-xl-3">
+
+            <div class="card">
+                <div class="d-flex flex-column align-items-center">
+
+                    <img src="/static/img/no-image.png" class="img-fluid rounded-start" alt="...">
+              
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-xl-5">
+
+          <div class="card">
+            <div class="card-body pt-3 profile-overview">
+
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Город</div>
+                    <div class="col-lg-9 col-md-8">{{ doc.city.ru }}</div>
                 </div>
 
-                <div class="card mb-3">
-                    <div class="row g-0">
-                        {% if doc.type == 'ad_look' %}
-                        <div class="col-md-4">
-                        <img src="/static/img/no-image.png" class="img-fluid rounded-start" alt="...">
-                        </div>
-                        {% endif %}
-                        <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title"></h5>
-                            <p class="card-text">{{ doc.info }}</p>
-                            <p class="card-text">Контакты: {{ doc.contact }}</p>
-                        </div>
-                        </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Район</div>
+                    <div class="col-lg-9 col-md-8">{{ doc.district.ru }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Адрес</div>
+                    <div class="col-lg-9 col-md-8">{{ doc.address }}</div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 label">Контакты</div>
+                    <div class="col-lg-9 col-md-8">{{ doc.contact }}</div>
+                </div>
+
+                <h5 class="card-title">Описание</h5>
+                <p>{{ doc.info }}</p>
+
+                <div class="row mt-5 mb-0">
+                    <div class="col-9">
+
+                    </div>
+                    <div class="col-3">
+                        <p class="small">{{ doc.create_time|date:"d.m.Y" }}</p>
                     </div>
                 </div>
 
             </div>
-           
 
-            <!-- Right bar -->
-            <div class="col-xl-4">
-
-            </div>
+          </div>
 
         </div>
-        
+      </div>
     </section>
-</main>
 
+  </main>
 {% endblock content %}

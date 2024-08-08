@@ -11,19 +11,13 @@
 
         <div class="iconslist">
             {% for x in ad_look %}
-            <a href="{% url 'ad' x.ad %}">
-                <div class="card">
-                    <img src="/static/img/no-image.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">г. {{x.city}}, {{x.district}} район</h5>
-                        <p class="card-text">{{ x.info }}</p>
-                    </div>
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-success" onclick="check_result('{{x.ad}}', 'accept')">Принять</button>
-                        <button type="button" class="btn btn-danger" onclick="check_result('{{x.ad}}', 'reject')">Отклонить</button>
-                    </div>
+            <div class="icon">
+                {% include '../include/ad_card_ver.html' %}
+                <div class="label">
+                    <button type="button" class="btn btn-success" onclick="check_result('{{x.ad}}', 'accept')">Принять</button>
+                    <button type="button" class="btn btn-danger" onclick="check_result('{{x.ad}}', 'reject')">Отклонить</button>
                 </div>
-            </a>
+            </div>
             {% endfor %}
         </div>
 
@@ -33,19 +27,13 @@
 
         <div class="iconslist">
             {% for x in ad_go %}
-            <a href="{% url 'ad' x.ad %}">
-                <div class="card">
-                    <img src="/static/img/no-image.png" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">г. {{x.city}}, {{x.district}} район</h5>
-                        <p class="card-text">{{ x.info }}</p>
-                    </div>
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-success" onclick="check_result('{{x.ad}}', 'accept')">Принять</button>
-                        <button type="button" class="btn btn-danger" onclick="check_result('{{x.ad}}', 'reject')">Отклонить</button>
-                    </div>
+            <div class="icon">
+                {% include '../include/ad_card_ver.html' %}
+                <div class="label">
+                    <button type="button" class="btn btn-success" onclick="check_result('{{x.ad}}', 'accept')">Принять</button>
+                    <button type="button" class="btn btn-danger" onclick="check_result('{{x.ad}}', 'reject')">Отклонить</button>
                 </div>
-            </a>
+            </div>
             {% endfor %}
         </div>
     </section>

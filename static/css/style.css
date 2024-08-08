@@ -964,7 +964,7 @@ h6 {
 .iconslist {
   display: grid;
   max-width: 100%;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 300px));
+  grid-template-columns: repeat(auto-fit, minmax(180px, 200px));
   gap: 1.25rem;
   padding-top: 15px;
 }
