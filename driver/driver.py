@@ -41,12 +41,18 @@ def check_message():
             pyautogui.click()
 
             pyautogui.write(doc['phone'])
+            time.sleep(1)
             pyautogui.press('enter')
             time.sleep(5)
+
+            #send_button = None
+            #while send_button == None:
+                #send_button = pyautogui.locateOnScreen('/static/img/send_button.png')
 
             pyautogui.moveTo(746, 739)
             time.sleep(1)
             pyautogui.click()
+            time.sleep(1)
 
             pyautogui.write(str(doc['code'])+' - Korshiles.kz')
             pyautogui.press('enter')
