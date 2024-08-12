@@ -21,6 +21,7 @@ def create_ad(request):
         data['author'] = request.user.phone_number
         data['create_time'] = datetime.now()
         data['publish'] = False
+        data['views'] = 0
 
         z = json.load(open('static/base/cities.json', encoding='utf-8'))
 

@@ -3,7 +3,10 @@
         <img src="/static/img/no-image.png" class="card-img-top" alt="...">
         <div class="card-body">
             <h5 class="card-title">г. {{x.city.ru}}, {{x.district.ru}} район</h5>
-            <p class="card-text">{{x.create_time|date:"d.m.Y"}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div></div>
+                <span>{{x.create_time|date:"d.m.Y"}}</span>
+            </div>
         </div>
     </div>
 </a>

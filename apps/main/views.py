@@ -55,6 +55,7 @@ def ad(request, ad):
     if doc['publish'] == False and request.user.is_staff == False:
         return redirect(index)
     else:
+        col.update_one({'ad': ad}, {'$set': {'views': doc['views']+1}})
         context = {'doc': doc}
         template = loader.get_template('main/ad.html')
         return HttpResponse(template.render(context, request))
