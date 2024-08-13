@@ -43,11 +43,7 @@ def check_message():
             pyautogui.write(doc['phone'])
             time.sleep(1)
             pyautogui.press('enter')
-            time.sleep(5)
-
-            #send_button = None
-            #while send_button == None:
-                #send_button = pyautogui.locateOnScreen('/static/img/send_button.png')
+            time.sleep(7)
 
             pyautogui.moveTo(746, 739)
             time.sleep(1)

@@ -3,8 +3,6 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib import messages
 import random
 from django.http import HttpResponse
-from selenium import webdriver
-from chromedriver_py import binary_path
 from django.views.decorators.csrf import csrf_exempt
 from db import get_db_handle as db
 import time, os
