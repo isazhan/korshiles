@@ -45,18 +45,18 @@
 
                 <div class="row">
                     <div class="col-lg-3 col-md-4 label">Контакты</div>
-                    <div class="col-lg-9 col-md-8">{{ doc.contact }}</div>
+                    <div class="col-lg-9 col-md-8">{{ doc.contact|slice:":1" }} {{ doc.contact|slice:"1:4" }} {{ doc.contact|slice:"4:7" }} {{ doc.contact|slice:"7:9" }} {{ doc.contact|slice:"9:11" }}</div>
                 </div>
 
                 <h5 class="card-title">Описание</h5>
                 <p>{{ doc.info }}</p>
 
                 <div class="row mt-5 mb-0">
-                    <div class="col-9">
-
-                    </div>
-                    <div class="col-3">
-                        <p class="small">{{ doc.create_time|date:"d.m.Y" }}</p>
+                    <div class="card-footer d-flex justify-content-between align-items-center">
+                        <div>
+                            
+                        </div>
+                        <span>{{ doc.create_time|date:"d.m.Y" }}</span>
                     </div>
                 </div>
 
