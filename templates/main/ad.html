@@ -1,11 +1,11 @@
 {% extends '../base/base-index.html' %}
 
 {% block tittle %}
-<title>г. {{doc.city.ru}}, {{doc.district.ru}} район</title>
+<title>{{doc.type.ru}}, г. {{doc.city.ru}}{% if not doc.district.ru == None %}, {{doc.district.ru}} район{% endif %}</title>
 {% endblock tittle %}
 
 {% block description %}
-<meta name="description" content="{{doc.info}}">
+<meta name="description" content="{{doc.info|truncatechars:200}}">
 {% endblock description %}
 
 {% block content %}
@@ -13,7 +13,7 @@
 <main id="main" class="main" style="margin-left: 0px;">
 
     <div class="pagetitle">
-        <h1>г. {{doc.city.ru}}, {{doc.district.ru}} район</h1>
+        <h1>{{doc.type.ru}}, г. {{doc.city.ru}}{% if not doc.district.ru == None %}, {{doc.district.ru}} район{% endif %}</h1>
     </div>
 
     <section class="section profile">
@@ -57,7 +57,7 @@
                 </div>
 
                 <h5 class="card-title">Описание</h5>
-                <p>{{ doc.info }}</p>
+                <p>{{ doc.info|linebreaks }}</p>
 
                 <div class="row mt-5 mb-0">
                     <div class="card-footer d-flex justify-content-between align-items-center">

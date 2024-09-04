@@ -11,9 +11,11 @@
             <h1>Ищу на подселение</h1>
         </div>
 
-        <div class="iconslist">
+        <div class="row">
             {% for x in ad_look %}
+                <div class="col-xxl-2 col-xl-3 col-md-4 col-sm-6">
                 {% include '../include/ad_card_ver.html' %}
+                </div>
             {% endfor %}
         </div>
 
@@ -21,9 +23,11 @@
             <h1>Пойду на подселение</h1>
         </div>
 
-        <div class="iconslist">
+        <div class="row">
             {% for x in ad_go %}
+                <div class="col-xxl-2 col-xl-3 col-md-4 col-sm-6">
                 {% include '../include/ad_card_ver.html' %}
+                </div>
             {% endfor %}
         </div>
     </section>

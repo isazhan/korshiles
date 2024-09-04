@@ -33,6 +33,11 @@ def create_ad(request):
                         data['district'] = {'id': data['district'], 'ru': k['ru']}
                         break
                 break
+        
+        for i in z['ad_types']:
+            if i['id'] == data['type']:
+                data['type'] = {'id': data['type'], 'ru': i['ru']}
+                break
 
         x = col.insert_one(data)
     return render(request, 'cabinet/create_ad.html')
@@ -41,8 +46,8 @@ def create_ad(request):
 @login_required
 def check_ad(request):
     col = db()['ads']
-    ad_go = col.find({'type': 'ad_go', 'publish': False})
-    ad_look = col.find({'type': 'ad_look', 'publish': False})
+    ad_go = col.find({'type.id': 'ad_go', 'publish': False})
+    ad_look = col.find({'type.id': 'ad_look', 'publish': False})
     context = {
         'ad_go': ad_go,
         'ad_look': ad_look,
@@ -70,7 +75,7 @@ def check_result(request):
 def my_ads(request):
     col = db()['ads']
 
-    my_ads = col.find({'author': request.user.phone_number})
+    my_ads = col.find({'author': request.user.phone_number}).sort('create_time', -1)
     context = {
         'my_ads': my_ads,
     }

@@ -7,8 +7,8 @@ from db import get_db_handle as db
 
 def index(request):
     col = db()['ads']
-    ad_go = col.find({'type': 'ad_go', 'publish': True}).limit(10).sort('create_time', -1)
-    ad_look = col.find({'type': 'ad_look', 'publish': True}).limit(10).sort('create_time', -1)
+    ad_go = col.find({'type.id': 'ad_go', 'publish': True}).limit(6).sort('create_time', -1)
+    ad_look = col.find({'type.id': 'ad_look', 'publish': True}).limit(6).sort('create_time', -1)
     context = {
         'ad_go': ad_go,
         'ad_look': ad_look,
@@ -34,7 +34,7 @@ def search(request):
                     filter_dict[field]['$gte'] = int(value)
                 elif range_type == 'max':
                     filter_dict[field]['$lte'] = int(value)
-        elif key=='city' or key=='district':
+        elif key=='city' or key=='district' or key=='type':
             if not value == '':
                 filter_dict[key+'.id'] = value
         else:
