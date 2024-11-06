@@ -12,3 +12,7 @@ def index(request):
         data.append(item)
     
     return JsonResponse(data, safe=False)
+
+
+def ad(request):
+    print(request)
