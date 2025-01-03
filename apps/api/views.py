@@ -33,24 +33,17 @@ def index(request):
     for item in doc:
         item['_id'] = str(item['_id'])
         data.append(item)
-    
+
     return JsonResponse(data, safe=False)
 
 
 @csrf_exempt
 def ad(request):
-    ad = int(request.POST['ad'])
+    ad = int(request.GET['ad'])
     col = db()['ads']
     doc = col.find_one({'ad': ad})
     col.update_one({'ad': ad}, {'$set': {'views': doc['views']+1}})
 
     doc['_id'] = str(doc['_id'])
-    
+
     return JsonResponse(doc, safe=False)
-
-
-@csrf_exempt
-def filter(request):
-    print(request.POST)
-    print('Filter request')
-    return JsonResponse('good', safe=False)
