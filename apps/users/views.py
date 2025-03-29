@@ -7,6 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 from db import get_db_handle as db
 import time, os
 from pyvirtualdisplay import Display
+import telebot
+import json
 
 
 codes = {}
@@ -61,9 +63,15 @@ def logout_user(request):
 def send_whatsapp_code(phone_number):
     code = random.randint(1000,9999)
     codes[phone_number] = code
-    print('code created')
-    col = db()['whatsapp']
-    x = col.insert_one({'phone': phone_number, 'code': code})
+
+    data = json.load(open('telebot.json'))
+    API_TOKEN = data['token']
+    CHAT_ID = data['chatid']
+    bot = telebot.TeleBot(API_TOKEN)
+    bot.send_message(CHAT_ID, str(phone_number)+'?text='+str(code)+'%20-%20Korshiles.kz')
+    #print('code created')
+    #col = db()['whatsapp']
+    #x = col.insert_one({'phone': phone_number, 'code': code})
 
 
 def forget_password(request):
