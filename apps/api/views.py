@@ -21,18 +21,25 @@ def index(request):
         elif key=='city' or key=='district' or key=='type':
             if not value == '':
                 filter_dict[key+'.id'] = value
-        else:
-            if not value == '':
-                filter_dict[key] = value
+        #else:
+            #if not value == '':
+                #filter_dict[key] = value
     #print('Filter')
     #print(filter_dict)
+
+    quantity_in_page = 10
+    start = int(data['page']) * quantity_in_page - quantity_in_page
+    #print('Start: ', start)
     col = db()['ads']
-    doc = col.find(filter_dict).sort('create_time', -1)
+    doc = col.find(filter_dict).skip(start).limit(quantity_in_page).sort('create_time', -1)
+    
 
     data = []
     for item in doc:
         item['_id'] = str(item['_id'])
         data.append(item)
+    
+    #print(data)
 
     return JsonResponse(data, safe=False)
 
