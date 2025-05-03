@@ -30,7 +30,7 @@ def login_user(request):
                 return HttpResponse('user_exist')
             else:
                 print('user does not exist')
-                send_whatsapp_code(phone_number)
+                send_code(phone_number)
                 return HttpResponse('code_sent')
             
         if not code == '' and password == '' and password_new == '':
@@ -60,15 +60,18 @@ def logout_user(request):
     return redirect('/')
 
 
-def send_whatsapp_code(phone_number):
+def send_code(phone_number):
     code = random.randint(1000,9999)
     codes[phone_number] = code
 
     data = json.load(open('telebot.json'))
     API_TOKEN = data['token']
-    CHAT_ID = data['chatid']
+    col = db()['telebot']
+    query = {'phone': phone_number}
+    doc = col.find_one(query)
+    CHAT_ID = doc['chatid']
     bot = telebot.TeleBot(API_TOKEN)
-    bot.send_message(CHAT_ID, str(phone_number)+'?text='+str(code)+'%20-%20Korshiles.kz')
+    bot.send_message(CHAT_ID, 'Ваш код подтверждения - '+str(code))
     #print('code created')
     #col = db()['whatsapp']
     #x = col.insert_one({'phone': phone_number, 'code': code})
