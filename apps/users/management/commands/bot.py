@@ -1,24 +1,26 @@
 from django.core.management.base import BaseCommand
-from telegram import Update, KeyboardButton, ReplyKeyboardMarkup
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
+import telebot
+import os
 import json
 from db import get_db_handle as db
 
+
 data = json.load(open('telebot.json'))
-
 TOKEN = data['token']
+bot = telebot.TeleBot(TOKEN)
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    contact_button = KeyboardButton(text="Поделиться номером телефона", request_contact=True)
-    reply_markup = ReplyKeyboardMarkup([[contact_button]], one_time_keyboard=True, resize_keyboard=True)
 
-    await update.message.reply_text(
-        "Нажмите на копку \"Поделиться номером телефона\"",
-        reply_markup=reply_markup
-    )
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    markup = telebot.types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
+    button = telebot.types.KeyboardButton("Поделиться номером телефона", request_contact=True)
+    markup.add(button)
+    bot.send_message(message.chat.id, "Нажмите на копку \"Поделиться номером телефона\"", reply_markup=markup)
 
-async def contact_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    contact = update.message.contact
+
+@bot.message_handler(content_types=['contact'])
+def handle_contact(message):
+    contact = message.contact
     if contact:
         col = db()['telebot']
         query = {'phone': contact.phone_number}
@@ -27,18 +29,14 @@ async def contact_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             pass
         else:
             x = col.insert_one({'phone': contact.phone_number, 'chatid': contact.user_id})
-        await update.message.reply_text(f"Спасибо! Теперь код подтверждения будет отправляться сюда.")
+        bot.send_message(message.chat.id, f"Спасибо! Теперь код подтверждения будет отправляться сюда.")
     else:
         pass
 
+
 class Command(BaseCommand):
-    help = 'Runs the Telegram bot'
+    help = 'Run the Telegram bot'
 
     def handle(self, *args, **kwargs):
-        app = ApplicationBuilder().token(TOKEN).build()
-
-        app.add_handler(CommandHandler("start", start))
-        app.add_handler(MessageHandler(filters.CONTACT, contact_handler))
-
-        self.stdout.write(self.style.SUCCESS("Bot is running..."))
-        app.run_polling()
+        print("Bot is polling...")
+        bot.infinity_polling()
