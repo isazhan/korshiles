@@ -69,3 +69,8 @@ def robots_txt(request):
         "Sitemap: https://korshiles.kz/sitemap.xml",
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
+
+
+def policy(request):
+    template = loader.get_template('main/policy.html')
+    return HttpResponse(template.render({}, request))
