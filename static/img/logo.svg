@@ -5,47 +5,47 @@
   <!-- 
   cx = w/2
   cy = h/2
-  r = w/2.5
+  r = w/2
   -->
-  <circle cx="400" cy="400" r="300" fill="#1697D1" />
+  <circle cx="400" cy="400" r="400" fill="#1697D1" />
 
   <!--
-  w = w/3.2
-  h = h/5.3
+  w = w/2
+  h = h/3.2
   x = (w - w(rect))/2
   y = h/2
   -->
-  <rect width="250" height="150" x="275" y="400" fill="white" />
+  <rect width="400" height="250" x="200" y="400" fill="white" />
 
   <!--
-  t = w/32
-  1) w/2, h/3.2
+  t = w/20
+  1) w/2, h/5
   2) x(rect)-t, h/2
   3) x(rect)+w(rect)+t, h/2
   -->
-  <polygon points="400,250 250,400 550,400" fill="white" />
+  <polygon points="400,160 160,400 640,400" fill="white" />
   
   <!-- Windows -->
   <!--
-  t = w/160
-  w(window) = h(window) = w/25
+  t = w/80
+  w(window) = h(window) = w/16
   1) x = w/2-w(window)-t, y = h/2+h(window)*2
   2) x = w/2+t, y = h/2+h(window)*2
   3) x = w/2-w(window)-t, y = h/2+h(window)-t*2
   4) x = w/2+t, y = h/2+h(window)-t*2
   -->
-  <rect width="30" height="30" x="365" y="460" fill="#1697D1" />
-  <rect width="30" height="30" x="405" y="460" fill="#1697D1" />
-  <rect width="30" height="30" x="365" y="420" fill="#1697D1" />
-  <rect width="30" height="30" x="405" y="420" fill="#1697D1" />
+  <rect width="50" height="50" x="340" y="500" fill="#1697D1" />
+  <rect width="50" height="50" x="410" y="500" fill="#1697D1" />
+  <rect width="50" height="50" x="340" y="430" fill="#1697D1" />
+  <rect width="50" height="50" x="410" y="430" fill="#1697D1" />
 
   <!-- Chimney -->
   <!--
   t = w/40
-  1) w/2.5, h/2.8
-  2) w/2.5+t, h/2.8
-  3) w/2.5+t, h/2.5
-  4) w/2.5, h/2.5+t
+  1) w/3.2, h/4
+  2) w/3.2+t, h/4
+  3) w/3.2+t, h/2.5
+  4) w/3.2, h/2.5+t
   -->
-  <polygon points="300,280 320,280 320,320 300,340" fill="white" />
+  <polygon points="250,200 270,200 270,320 250,340" fill="white" />
 </svg>
