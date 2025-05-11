@@ -34,10 +34,17 @@ def index(request):
     doc = col.find(filter_dict).skip(start).limit(quantity_in_page).sort('create_time', -1)
     
 
-    data = []
+    ads = []
     for item in doc:
         item['_id'] = str(item['_id'])
-        data.append(item)
+        ads.append(item)
+    
+    data = {
+        'ads': ads,
+        #'page': int(data['page']),
+        #'quantity_in_page': quantity_in_page,
+        'total': col.count_documents(filter_dict)
+    }
     
     #print(data)
 
