@@ -12,3 +12,5 @@ pyautogui==0.9.54
 telebot==0.0.5
 legacy-cgi==2.6.2
 pyTelegramBotAPI==4.27.0
+djangorestframework-simplejwt
+django-cors-headers
