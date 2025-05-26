@@ -17,4 +17,5 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}, name='django.contrib.sitemaps.views.sitemap'),
     path('robots.txt', views.robots_txt),
     path('policy', views.policy, name='policy'),
+    path('app-ads.txt', views.app_ads_txt),
 ]

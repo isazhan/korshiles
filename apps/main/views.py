@@ -74,3 +74,10 @@ def robots_txt(request):
 def policy(request):
     template = loader.get_template('main/policy.html')
     return HttpResponse(template.render({}, request))
+
+
+def app_ads_txt(request):
+    lines = [
+        "google.com, pub-5754778099148012, DIRECT, f08c47fec0942fa0",
+    ]
+    return HttpResponse("\n".join(lines), content_type="text/plain")
