@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 import random
 import telebot
 import json
+from datetime import datetime, timedelta
 
 def index(request):
     #print('Index request: ', request.GET)
@@ -29,6 +30,7 @@ def index(request):
                 #filter_dict[key] = value
     #print('Filter')
     #print(filter_dict)
+    filter_dict['publish'] = True
 
     quantity_in_page = 10
     start = int(data['page']) * quantity_in_page - quantity_in_page
@@ -53,6 +55,24 @@ def index(request):
 
     return JsonResponse(data, safe=False)
 
+
+def my_ads(request):
+    phone_number = request.GET['phone_number']
+    col = db()['ads']
+    query = {'author': phone_number}
+    doc = col.find(query).sort('create_time', -1)
+
+    ads = []
+    for item in doc:
+        item['_id'] = str(item['_id'])
+        ads.append(item)
+    
+    data = {
+        'ads': ads,
+    }
+
+    return JsonResponse(data, safe=False)
+    
 
 @csrf_exempt
 def ad(request):
@@ -80,7 +100,7 @@ codes = {}
 
 class LoginAPIView(APIView):
     def post(self, request):
-        print('Login request: ', request.data)
+        #print('Login request: ', request.data)
         phone_number = request.data['phone_number']
         code = request.data['code']
         password = request.data['password']
@@ -169,5 +189,34 @@ class CreateAdAPIView(APIView):
 
     def post(self, request):
         data = request.data
-        print('Received:', data)
+        col = db()['ads']
+        doc = col.find({}, {'_id': 0, 'ad': 1}).sort('_id', -1).limit(1)
+        try:
+            ad = doc[0]['ad'] + 1
+        except:
+            ad = 100000000
+        data['ad'] = ad
+        data['author'] = request.user.phone_number
+        data['create_time'] = datetime.now()
+        data['publish'] = False
+        data['views'] = 0
+
+        z = json.load(open('static/base/cities.json', encoding='utf-8'))
+
+        for i in z['cities']:
+            if i['id'] == data['city']:
+                data['city'] = {'id': data['city'], 'ru': i['ru']}
+                for k in i['districts']:
+                    if k['id'] == data['district']:
+                        data['district'] = {'id': data['district'], 'ru': k['ru']}
+                        break
+                break
+        
+        for i in z['ad_types']:
+            if i['id'] == data['type']:
+                data['type'] = {'id': data['type'], 'ru': i['ru']}
+                break
+
+        x = col.insert_one(data)
+
         return JsonResponse({'status': 'ok'})

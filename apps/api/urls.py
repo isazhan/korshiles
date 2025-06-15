@@ -7,6 +7,7 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('index', views.index, name='index'),
+    path('api_my_ads', views.my_ads, name='api_my_ads'),
     path('ad', views.ad, name='ad'),
     path('api_create_ad', views.CreateAdAPIView.as_view(), name='api_create_ad'),
     path('api_login', views.LoginAPIView.as_view(), name='api_login'),
