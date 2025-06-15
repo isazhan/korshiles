@@ -13,4 +13,5 @@ urlpatterns = [
     path('api_logout', views.LogoutAPIView.as_view(), name='api_logout'),
     path('token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api_check_token', views.CheckTokenAPIView.as_view(), name='api_check_token'),
 ]

@@ -136,13 +136,19 @@ class LoginAPIView(APIView):
         })
         '''
 
+class CheckTokenAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response('success')
+
+
 class LogoutAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         logout(request)
         return Response(status=status.HTTP_205_RESET_CONTENT)
-
 
 
 def send_code(phone_number):
