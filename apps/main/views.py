@@ -76,6 +76,11 @@ def policy(request):
     return HttpResponse(template.render({}, request))
 
 
+def terms(request):
+    template = loader.get_template('main/terms.html')
+    return HttpResponse(template.render({}, request))
+
+
 def app_ads_txt(request):
     lines = [
         "google.com, pub-5754778099148012, DIRECT, f08c47fec0942fa0",
