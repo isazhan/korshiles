@@ -1,6 +1,10 @@
 <a href="{% url 'ad' x.ad %}">
     <div class="card">
+        {% if x.photos.0 %}
+        <img src="data:image/webp;base64,{{x.photos.0}}" class="card-img-top" alt="...">
+        {% else %}
         <img src="/static/img/no-image.png" class="card-img-top" alt="...">
+        {% endif %}
         <div class="card-body">
             <h5 class="card-title">{{x.type.ru}}</h5>
             <p class="card-text">г. {{x.city.ru}}{% if not x.district.ru == None %}, {{x.district.ru}} район{% endif %}</p>

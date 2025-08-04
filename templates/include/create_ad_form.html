@@ -1,4 +1,4 @@
-<form method="post" action="{% url 'create_ad' %}">
+<form method="post" action="{% url 'create_ad' %}" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="list-group">
 
@@ -43,6 +43,12 @@
             <h4>Контакты</h4>
 
             <input type="number" name="contact" value="{{ user }}">            
+        </div>
+
+        <div class="list-group-item">
+            <h4>Фотографии</h4>
+
+            <input type="file" name="photos" accept="image/*" multiple>
         </div>
 
         <div class="list-group-item">

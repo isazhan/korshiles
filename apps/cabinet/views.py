@@ -5,12 +5,46 @@ from django.http import HttpResponse
 from db import get_db_handle as db
 from datetime import datetime, timedelta
 import json
+from PIL import Image
+from io import BytesIO
+import base64
 
 
 @login_required
 def create_ad(request):
     if request.method == 'POST':
+        
         data = request.POST.dict()
+
+        # Photos
+        images = request.FILES.getlist('photos')
+        results = []
+        for image in images:
+            try:
+                img = Image.open(image).convert('RGB')
+                webp_data = None
+
+                for quality in range(80, 10, -10):
+                    try:
+                        buffer = BytesIO()
+                        img.save(buffer, format='WEBP', quality=quality)
+                        img_data = buffer.getvalue()
+                        
+                        if len(img_data) < 100*1024 or quality==10: # 500 KB
+                            webp_data = img_data
+                            break
+
+                    except:
+                        pass
+
+                encoded_image = base64.b64encode(webp_data).decode('utf-8')
+                results.append(encoded_image)
+
+            except:
+                pass
+        # Photos
+        print(len(results))
+
         col = db()['ads']
         doc = col.find({}, {'_id': 0, 'ad': 1}).sort('_id', -1).limit(1)
         try:
@@ -22,6 +56,7 @@ def create_ad(request):
         data['create_time'] = datetime.now()
         data['publish'] = False
         data['views'] = 0
+        data['photos'] = results
 
         z = json.load(open('static/base/cities.json', encoding='utf-8'))
 
@@ -40,6 +75,7 @@ def create_ad(request):
                 break
 
         x = col.insert_one(data)
+
     return render(request, 'cabinet/create_ad.html')
 
 
