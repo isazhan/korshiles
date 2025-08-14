@@ -169,6 +169,18 @@ class LogoutAPIView(APIView):
     def post(self, request):
         logout(request)
         return Response(status=status.HTTP_205_RESET_CONTENT)
+    
+
+class DeleteAccountAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        phone_number = request.user.phone_number
+        User = get_user_model()
+        user = User.objects.get(phone_number=phone_number)
+        user.delete()
+        return Response({'status': 'ok'})
+
 
 
 def send_code(phone_number):
