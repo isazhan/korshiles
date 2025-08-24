@@ -113,8 +113,13 @@ class LoginAPIView(APIView):
                 return JsonResponse({'status': 'user_exist'})
             else:
                 print('user does not exist')
-                send_code(phone_number)
-                return JsonResponse({'status': 'code_sent'})
+                col = db()['telebot']
+                query = {'phone': phone_number}
+                if col.find_one(query):
+                    send_code(phone_number)
+                    return JsonResponse({'status': 'code_sent'})
+                else:
+                    return JsonResponse({'status': 'user_not_found'})
         
         if not code == '' and password == '' and password_new == '':
             if codes[phone_number] == int(code):
