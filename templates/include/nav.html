@@ -66,14 +66,15 @@
         </li>
         {% else %}
         <li class="nav-item pe-3">
-            <a href="{% url 'login' %}">
+            <a data-bs-toggle="modal" data-bs-target="#loginModal">
               <span class="btn btn-primary rounded-pill d-none d-md-block">Войти / Подать объявление</span>
               <span class="btn btn-primary rounded-pill d-block d-md-none">Войти</span>
             </a>
-        </li>        
+        </li>
         {% endif %}
 
       </ul>
     </nav>
 
 </header>
+{% include '../include/login_modal.html' %}
