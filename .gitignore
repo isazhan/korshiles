@@ -5,3 +5,4 @@ driver-data/
 dbconfig.json
 image.png
 telebot.json
+/static/ads

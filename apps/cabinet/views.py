@@ -6,8 +6,7 @@ from db import get_db_handle as db
 from datetime import datetime, timedelta
 import json
 from PIL import Image
-from io import BytesIO
-import base64
+import os
 
 
 @login_required
@@ -15,36 +14,7 @@ def create_ad(request):
     if request.method == 'POST':
         
         data = request.POST.dict()
-
-        # Photos
-        images = request.FILES.getlist('photos')
-        results = []
-        for image in images:
-            try:
-                img = Image.open(image).convert('RGB')
-                webp_data = None
-
-                for quality in range(80, 10, -10):
-                    try:
-                        buffer = BytesIO()
-                        img.save(buffer, format='WEBP', quality=quality)
-                        img_data = buffer.getvalue()
-                        
-                        if len(img_data) < 100*1024 or quality==10: # 500 KB
-                            webp_data = img_data
-                            break
-
-                    except:
-                        pass
-
-                encoded_image = base64.b64encode(webp_data).decode('utf-8')
-                results.append(encoded_image)
-
-            except:
-                pass
-        # Photos
-        print(len(results))
-
+        
         col = db()['ads']
         doc = col.find({}, {'_id': 0, 'ad': 1}).sort('_id', -1).limit(1)
         try:
@@ -56,7 +26,6 @@ def create_ad(request):
         data['create_time'] = datetime.now()
         data['publish'] = False
         data['views'] = 0
-        data['photos'] = results
 
         z = json.load(open('static/base/cities.json', encoding='utf-8'))
 
@@ -73,6 +42,20 @@ def create_ad(request):
             if i['id'] == data['type']:
                 data['type'] = {'id': data['type'], 'ru': i['ru']}
                 break
+        
+        # Photos
+        images = request.FILES.getlist('photos')
+        img_number = 1
+        for i in images:
+            try:
+                img = Image.open(i).convert('RGB')
+                os.makedirs(f'static/ads/{ad}', exist_ok=True)
+                img.save(f'static/ads/{ad}/{str(img_number) + '.webp'}', format='WEBP', quality=10)
+            except:
+                pass
+            img_number += 1
+        data['photos'] = img_number-1
+        # Photos
 
         x = col.insert_one(data)
 

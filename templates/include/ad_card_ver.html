@@ -1,7 +1,7 @@
 <a href="{% url 'ad' x.ad %}">
     <div class="card">
-        {% if x.photos.0 %}
-        <img src="data:image/webp;base64,{{x.photos.0}}" class="card-img-top" alt="...">
+        {% if x.photos > 0 %}
+        <img src="/static/ads/{{x.ad}}/1.webp" class="card-img-top" alt="...">
         {% else %}
         <img src="/static/img/no-image.png" class="card-img-top" alt="...">
         {% endif %}
