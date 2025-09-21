@@ -7,6 +7,7 @@ from datetime import datetime, timedelta
 import json
 from PIL import Image
 import os
+import shutil
 
 
 @login_required
@@ -45,16 +46,19 @@ def create_ad(request):
         
         # Photos
         images = request.FILES.getlist('photos')
+        photos = []
         img_number = 1
         for i in images:
             try:
                 img = Image.open(i).convert('RGB')
                 os.makedirs(f'static/ads/{ad}', exist_ok=True)
-                img.save(f'static/ads/{ad}/{str(img_number) + '.webp'}', format='WEBP', quality=10)
+                photo_path = f'static/ads/{ad}/{str(img_number) + ".webp"}'
+                img.save(photo_path, format='WEBP', quality=10)
+                photos.append(photo_path)
             except:
                 pass
             img_number += 1
-        data['photos'] = img_number-1
+        data['photos'] = photos
         # Photos
 
         x = col.insert_one(data)
@@ -86,6 +90,10 @@ def check_result(request):
             col.update_one(query, values)
         if request.POST['result'] == 'reject':
             col.delete_one(query)
+            try:
+                shutil.rmtree(f'static/ads/{request.POST["ad"]}')
+            except:
+                pass
 
         return HttpResponse('success')
     
