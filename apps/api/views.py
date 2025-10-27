@@ -167,14 +167,14 @@ class CheckTokenAPIView(APIView):
     def get(self, request):
         return Response('success')
 
-
+"""
 class LogoutAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
         logout(request)
         return Response(status=status.HTTP_205_RESET_CONTENT)
-    
+"""
 
 class DeleteAccountAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -203,6 +203,7 @@ def send_code(phone_number):
 
 
 class CreateAdAPIView(APIView):
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         data = request.data

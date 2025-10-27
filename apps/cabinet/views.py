@@ -58,7 +58,8 @@ def create_ad(request):
             except:
                 pass
             img_number += 1
-        data['photos'] = photos
+        if len(photos) > 0:
+            data['photos'] = photos
         # Photos
 
         x = col.insert_one(data)
