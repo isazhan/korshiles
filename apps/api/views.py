@@ -105,8 +105,13 @@ class LoginAPIView(APIView):
         code = request.data['code']
         password = request.data['password']
         password_new = request.data['password_new']
+        forget = request.data['forget']
 
         User = get_user_model()
+
+        if forget == 'true':
+            send_code(phone_number)
+            return JsonResponse({'status': 'new_code_sent'})
 
         if code == '' and password == '' and password_new == '':
             if User.objects.filter(phone_number=phone_number).exists():
@@ -130,6 +135,10 @@ class LoginAPIView(APIView):
         if code == '' and not password == '' or not password_new == '':
             if User.objects.filter(phone_number=phone_number).exists():
                 user = authenticate(phone_number=phone_number, password=password)
+                if not user:
+                    user = User.objects.get(phone_number=phone_number)
+                    user.set_password(password_new)
+                    user.save()
             else:
                 user = User.objects.create_user(phone_number, password_new)
                 user.save()
