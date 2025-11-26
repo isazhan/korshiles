@@ -114,7 +114,7 @@ class LoginAPIView(APIView):
             return JsonResponse({'status': 'new_code_sent'})
 
         if code == '' and password == '' and password_new == '':
-            if User.objects.filter(phone_number=phone_number).exists():
+            if db()['users_customuser'].find_one({'phone_number': phone_number}):
                 return JsonResponse({'status': 'user_exist'})
             else:
                 print('user does not exist')
@@ -133,7 +133,7 @@ class LoginAPIView(APIView):
                 return JsonResponse({'status': 'code_wrong'})
             
         if code == '' and not password == '' or not password_new == '':
-            if User.objects.filter(phone_number=phone_number).exists():
+            if db()['users_customuser'].find_one({'phone_number': phone_number}):
                 user = authenticate(phone_number=phone_number, password=password)
                 if not user:
                     user = User.objects.get(phone_number=phone_number)
