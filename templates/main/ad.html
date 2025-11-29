@@ -1,7 +1,7 @@
 {% extends '../base/base-index.html' %}
 
 {% block tittle %}
-<title>{{doc.type.ru}}, г. {{doc.city.ru}}{% if not doc.district.ru == None %}, {{doc.district.ru}} район{% endif %}</title>
+<title>{{ doc.type.ru }} - {{ doc.info|truncatechars_html:30 }}</title>
 {% endblock tittle %}
 
 {% block description %}
