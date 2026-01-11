@@ -5,6 +5,8 @@ import random
 import telebot
 import json
 from datetime import datetime, timedelta
+import os
+from PIL import Image
 
 def index(request):
     #print('Index request: ', request.GET)
@@ -95,6 +97,7 @@ from .models import UserSerializer, LoginSerializer
 from rest_framework import status
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
 
 codes = {}
 
@@ -213,9 +216,10 @@ def send_code(phone_number):
 
 class CreateAdAPIView(APIView):
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
 
     def post(self, request):
-        data = request.data
+        data = request.data.dict()
         col = db()['ads']
         doc = col.find({}, {'_id': 0, 'ad': 1}).sort('_id', -1).limit(1)
         try:
@@ -232,17 +236,36 @@ class CreateAdAPIView(APIView):
 
         for i in z['cities']:
             if i['id'] == data['city']:
-                data['city'] = {'id': data['city'], 'ru': i['ru']}
+                data['city'] = {'id': data['city'], 'kk': i['kk'], 'ru': i['ru']}
                 for k in i['districts']:
                     if k['id'] == data['district']:
-                        data['district'] = {'id': data['district'], 'ru': k['ru']}
+                        data['district'] = {'id': data['district'], 'kk': k['kk'], 'ru': k['ru']}
                         break
                 break
         
         for i in z['ad_types']:
             if i['id'] == data['type']:
-                data['type'] = {'id': data['type'], 'ru': i['ru']}
+                data['type'] = {'id': data['type'], 'kk': i['kk'], 'ru': i['ru']}
                 break
+
+        # Photos
+        images = request.FILES.getlist('images')
+        photos = []
+        img_number = 1
+        for i in images:
+            try:
+                img = Image.open(i.file).convert('RGB')
+                os.makedirs(f'static/ads/{ad}', exist_ok=True)
+                photo_path = f'static/ads/{ad}/{str(img_number) + ".webp"}'
+                img.save(photo_path, format='WEBP', quality=30)
+                photos.append(photo_path)
+            except:
+                pass
+            img_number += 1
+        if len(photos) > 0:
+            data['photos'] = photos
+        data.pop('images', None)
+        # Photos
 
         x = col.insert_one(data)
 
