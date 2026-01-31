@@ -99,7 +99,7 @@ from django.contrib.auth import authenticate, login, logout, get_user_model
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 
-codes = {}
+#codes = {}
 
 class LoginAPIView(APIView):
     def post(self, request):
@@ -130,7 +130,10 @@ class LoginAPIView(APIView):
                     return JsonResponse({'status': 'user_not_found'})
         
         if not code == '' and password == '' and password_new == '':
-            if codes[phone_number] == int(code):
+            col = db()['telebot']
+            query = {'phone': phone_number}
+            doc = col.find_one(query)
+            if doc and doc['code'] == int(code):
                 return JsonResponse({'status': 'code_accept'})
             else:
                 return JsonResponse({'status': 'code_wrong'})
@@ -202,12 +205,15 @@ class DeleteAccountAPIView(APIView):
 
 def send_code(phone_number):
     code = random.randint(1000,9999)
-    codes[phone_number] = code
+
+    col = db()['telebot']
+    query = {'phone': phone_number}
+
+    #codes[phone_number] = code
+    x = col.update_one(query, {'$set': {'code': code}})
 
     data = json.load(open('telebot.json'))
     API_TOKEN = data['token']
-    col = db()['telebot']
-    query = {'phone': phone_number}
     doc = col.find_one(query)
     CHAT_ID = doc['chatid']
     bot = telebot.TeleBot(API_TOKEN)
