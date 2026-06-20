@@ -6,3 +6,5 @@ dbconfig.json
 image.png
 telebot.json
 /static/ads
+adbot.json
+*.session
