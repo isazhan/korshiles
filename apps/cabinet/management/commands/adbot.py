@@ -4,12 +4,14 @@ import json
 from google import genai
 from db import get_db_handle as db
 from datetime import datetime
+from groq import Groq
 
 
 data = json.load(open('adbot.json'))
 API_ID = data['api_id']
 API_HASH = data['api_hash']
 GEMINI_API_KEY = data['gemini_api_key']
+GROQ_API_KEY = data['groq_api_key']
 
 # Можно указывать username (например, 'pythontext') или ID каналов (-100xxxxxxxxx)
 CHANNELS_TO_LISTEN = [
@@ -20,6 +22,8 @@ CHANNELS_TO_LISTEN = [
 # Создаем клиента. При первом запуске скрипт попросит ввести номер телефона и код из Telegram
 client = TelegramClient('session_listener', API_ID, API_HASH)
 
+client_gemini = genai.Client(api_key=GEMINI_API_KEY)
+client_groq = Groq(api_key=GROQ_API_KEY)
 
 # Одиночные сообщения
 @client.on(events.NewMessage(chats=CHANNELS_TO_LISTEN))
@@ -44,18 +48,33 @@ async def album_handler(event):
 
 
 async def gemini(message_text, photo=None):
-    client_gemini = genai.Client(api_key=GEMINI_API_KEY)
-    try:
-        response = client_gemini.models.generate_content(
-            model='gemini-3.1-flash-lite',
-            contents="""Посмотри нижний текст. Если это объявление на подселение в Алматы и есть контактный номер телефона, тогда верни мне json с следующими полями:
+    contents="""Посмотри нижний текст. Если это объявление на подселение в Алматы и есть контактный номер телефона, тогда верни мне json с следующими полями:
             1) "type": если это "ищу на подселение" тогда значение "ad_look", а если "пойду на подселение" тогда значение "ad_go". Если трудно понять ставь ad_look.
             2) "district": Алатауский "101", Алмалинский "102", Ауэзовский "103", Бостандыкский "104", Жетысуский "105", Медеуский "106", Наурызбайский "107", Турксибский "108". Если трудно понять оставь пустым.
             3) "address": попробуй вытащить адрес в виде текста, если не получается оставь пустым.
-            4) "contact": вытащи номер телефона в формате 77XXXXXXXXX. Только 11 цифр. Это обязательно должно быть в объявлении, если не получается найти, тогда не возвращай json.
+            4) "contact": вытащи номер телефона в формате 77XXXXXXXXX. Только 11 цифр и всегда должен начинаться на 7. Это обязательно должно быть в объявлении, если не получается найти, тогда не возвращай json.
             Все значения string.""" + "\n\n" + str(message_text)
+    try:
+        # Gemini
+        """
+        response = client_gemini.models.generate_content(
+            model='gemini-3.1-flash-lite',
+            contents=contents,
         )
         ad_data = response.text
+        """
+
+        # Groq
+        chat_completion = client_groq.chat.completions.create(
+            messages=[
+                {
+                    "role": "user",
+                    "content": contents,
+                }
+            ],
+            model="openai/gpt-oss-20b",
+        )
+        ad_data = chat_completion.choices[0].message.content
 
         #print(type(ad_data))
         #print(ad_data)
