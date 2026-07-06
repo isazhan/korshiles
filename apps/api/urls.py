@@ -11,7 +11,8 @@ urlpatterns = [
     path('index', views.index, name='index'),
     path('api_my_ads', views.my_ads, name='api_my_ads'),
     path('ad', views.ad, name='ad'),
-    path('api_create_ad', views.CreateAdAPIView.as_view(), name='api_create_ad'),
+    path('api_create_ad', views.create_ad, name='api_create_ad'),
+    path('api_delete_ad', views.delete_ad, name='api_delete_ad'),
 
     # Login Views
     path('api_login', views.LoginAPIView.as_view(), name='api_login'),

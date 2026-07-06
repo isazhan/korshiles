@@ -7,6 +7,7 @@ import json
 from datetime import datetime, timedelta
 import os
 from PIL import Image
+import shutil
 
 def index(request):
     #print('Index request: ', request.GET)
@@ -220,59 +221,78 @@ def send_code(phone_number):
     bot.send_message(CHAT_ID, 'Ваш код подтверждения - '+str(code))
 
 
-class CreateAdAPIView(APIView):
-    permission_classes = [IsAuthenticated]
-    parser_classes = [MultiPartParser, FormParser]
+#class CreateAdAPIView(APIView):
+    #permission_classes = [IsAuthenticated]
+    #parser_classes = [MultiPartParser, FormParser]
 
-    def post(self, request):
-        data = request.data.dict()
-        col = db()['ads']
-        doc = col.find({}, {'_id': 0, 'ad': 1}).sort('_id', -1).limit(1)
+@csrf_exempt
+def create_ad(request):
+    data = request.POST.dict()
+    col = db()['ads']
+    doc = col.find({}, {'_id': 0, 'ad': 1}).sort('_id', -1).limit(1)
+    try:
+        ad = doc[0]['ad'] + 1
+    except:
+        ad = 100000000
+    data['ad'] = ad
+    data['create_time'] = datetime.now()
+    data['publish'] = False
+    data['views'] = 0
+    z = json.load(open('static/base/cities.json', encoding='utf-8'))
+
+    for i in z['cities']:
+        if i['id'] == data['city']:
+            data['city'] = {'id': data['city'], 'kk': i['kk'], 'ru': i['ru']}
+            for k in i['districts']:
+                if k['id'] == data['district']:
+                    data['district'] = {'id': data['district'], 'kk': k['kk'], 'ru': k['ru']}
+                    break
+            break
+
+    for i in z['ad_types']:
+        if i['id'] == data['type']:
+            data['type'] = {'id': data['type'], 'kk': i['kk'], 'ru': i['ru']}
+            break
+
+    # Photos
+    images = request.FILES.getlist('images')
+    photos = []
+    img_number = 1
+    for i in images:
         try:
-            ad = doc[0]['ad'] + 1
+            img = Image.open(i.file).convert('RGB')
+            os.makedirs(f'static/ads/{ad}', exist_ok=True)
+            photo_path = f'static/ads/{ad}/{str(img_number) + ".webp"}'
+            img.save(photo_path, format='WEBP', quality=30)
+            photos.append(photo_path)
         except:
-            ad = 100000000
-        data['ad'] = ad
-        data['author'] = request.user.phone_number
-        data['create_time'] = datetime.now()
-        data['publish'] = False
-        data['views'] = 0
+            pass
+        img_number += 1
+    if len(photos) > 0:
+        data['photos'] = photos
+    data.pop('images', None)
+    # Photos
 
-        z = json.load(open('static/base/cities.json', encoding='utf-8'))
+    x = col.insert_one(data)
 
-        for i in z['cities']:
-            if i['id'] == data['city']:
-                data['city'] = {'id': data['city'], 'kk': i['kk'], 'ru': i['ru']}
-                for k in i['districts']:
-                    if k['id'] == data['district']:
-                        data['district'] = {'id': data['district'], 'kk': k['kk'], 'ru': k['ru']}
-                        break
-                break
-        
-        for i in z['ad_types']:
-            if i['id'] == data['type']:
-                data['type'] = {'id': data['type'], 'kk': i['kk'], 'ru': i['ru']}
-                break
+    return JsonResponse({'status': 'ok'})
 
-        # Photos
-        images = request.FILES.getlist('images')
-        photos = []
-        img_number = 1
-        for i in images:
-            try:
-                img = Image.open(i.file).convert('RGB')
-                os.makedirs(f'static/ads/{ad}', exist_ok=True)
-                photo_path = f'static/ads/{ad}/{str(img_number) + ".webp"}'
-                img.save(photo_path, format='WEBP', quality=30)
-                photos.append(photo_path)
-            except:
-                pass
-            img_number += 1
-        if len(photos) > 0:
-            data['photos'] = photos
-        data.pop('images', None)
-        # Photos
 
-        x = col.insert_one(data)
+@csrf_exempt
+def delete_ad(request):
+    data = json.loads(request.body)
+    ad = int(data['ad'])
+    author = data['author']
 
+    col = db()['ads']
+    x = col.find_one({'ad': ad})
+
+    if x['author'] == author:
+        x = col.delete_one({'ad': ad})
+        try:
+            shutil.rmtree(f'static/ads/{ad}')
+        except:
+            pass
         return JsonResponse({'status': 'ok'})
+    else:
+        return JsonResponse({'status': 'error'})

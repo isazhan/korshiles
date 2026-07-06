@@ -115,6 +115,18 @@ def my_ads(request):
 def delete_outdated(request):
     col = db()['ads']
     query = {'create_time': {"$lt": datetime.now()-timedelta(days=7)}}
+
+    ads = []
+    x = col.find(query)
+    for ad in x:
+        ads.append(ad['ad'])
+
+    try:
+        for ad in ads:
+            shutil.rmtree(f'static/ads/'+str(ad))
+    except:
+        pass
+
     x = col.delete_many(query)
     
     return redirect(create_ad)
