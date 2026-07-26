@@ -123,7 +123,7 @@ def delete_outdated(request):
 
     try:
         for ad in ads:
-            shutil.rmtree(f'static/ads/'+str(ad))
+            shutil.rmtree(f'static/ads/{ad}')
     except:
         pass
 
