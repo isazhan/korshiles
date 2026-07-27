@@ -14,6 +14,7 @@
             <div class="col-xxl-2 col-xl-3 col-md-4 col-sm-6">
                 <div class="card text-center">
                     {% include '../include/ad_card_ver.html' %}
+                    <p>{{ x.author }}</p>
                     <div class="label">
                         <button type="button" class="btn btn-success" onclick="check_result('{{x.ad}}', 'accept')">Принять</button>
                         <button type="button" class="btn btn-danger" onclick="check_result('{{x.ad}}', 'reject')">Удалить</button>
@@ -32,6 +33,7 @@
             <div class="col-xxl-2 col-xl-3 col-md-4 col-sm-6">
                 <div class="card text-center">
                     {% include '../include/ad_card_ver.html' %}
+                    <p>{{ x.author }}</p>
                     <div class="label">
                         <button type="button" class="btn btn-success" onclick="check_result('{{x.ad}}', 'accept')">Принять</button>
                         <button type="button" class="btn btn-danger" onclick="check_result('{{x.ad}}', 'reject')">Удалить</button>
