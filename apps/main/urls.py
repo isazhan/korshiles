@@ -19,4 +19,5 @@ urlpatterns = [
     path('policy', views.policy, name='policy'),
     path('terms', views.terms, name='terms'),
     path('app-ads.txt', views.app_ads_txt),
+    path('app_download', views.app_download, name='app_download'),
 ]

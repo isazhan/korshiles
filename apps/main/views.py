@@ -95,3 +95,17 @@ def app_ads_txt(request):
         "google.com, pub-5754778099148012, DIRECT, f08c47fec0942fa0",
     ]
     return HttpResponse("\n".join(lines), content_type="text/plain")
+
+
+def app_download(request):
+    user_agent = request.META.get('HTTP_USER_AGENT', '').lower()
+    
+    app_store_url = "https://apps.apple.com/app/id6746857256"
+    google_play_url = "https://play.google.com/store/apps/details?id=com.korshiles_app"
+
+    if 'iphone' in user_agent or 'ipad' in user_agent or 'ipod' in user_agent:
+        return redirect(app_store_url)
+    elif 'android' in user_agent:
+        return redirect(google_play_url)
+    else:
+        return redirect(index)
