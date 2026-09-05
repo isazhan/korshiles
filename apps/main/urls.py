@@ -2,6 +2,7 @@ from django.urls import path
 from . import views
 from django.contrib.sitemaps.views import sitemap
 from .sitemaps import StaticViewSitemap, DynamicViewSitemap
+from .feeds import CustomDataFeed
 
 
 sitemaps = {
@@ -20,4 +21,5 @@ urlpatterns = [
     path('terms', views.terms, name='terms'),
     path('app-ads.txt', views.app_ads_txt),
     path('app_download', views.app_download, name='app_download'),
+    path('rss/', CustomDataFeed(), name='custom_data_feed'),
 ]
