@@ -70,11 +70,13 @@ def create_ad(request):
 @login_required
 def check_ad(request):
     col = db()['ads']
-    ad_go = col.find({'type.id': 'ad_go', 'publish': False})
-    ad_look = col.find({'type.id': 'ad_look', 'publish': False})
+    #ad_go = col.find({'type.id': 'ad_go', 'publish': False})
+    #ad_look = col.find({'type.id': 'ad_look', 'publish': False})
+    ads = col.find({'publish': False})
     context = {
-        'ad_go': ad_go,
-        'ad_look': ad_look,
+        #'ad_go': ad_go,
+        #'ad_look': ad_look,
+        'ads': ads,
     }
 
     template = loader.get_template('cabinet/check_ad.html')
