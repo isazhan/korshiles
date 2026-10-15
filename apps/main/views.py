@@ -61,8 +61,8 @@ def ad(request, ad):
             template = loader.get_template('main/ad.html')
             return HttpResponse(template.render(context, request))
     else:
-        template = loader.get_template('main/404.html')
-        return HttpResponse(template.render({}, request), status=404)
+        template = loader.get_template('main/410.html')
+        return HttpResponse(template.render({}, request), status=410)
 
 
 def robots_txt(request):
