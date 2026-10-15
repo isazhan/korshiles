@@ -123,11 +123,11 @@ def delete_outdated(request):
     for ad in x:
         ads.append(ad['ad'])
 
-    try:
-        for ad in ads:
+    for ad in ads:
+        try:        
             shutil.rmtree(f'static/ads/{ad}')
-    except:
-        pass
+        except:
+            pass
 
     x = col.delete_many(query)
     
